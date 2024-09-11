@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Omnia.Foundation.Models" Version="31.1.20033" />
+    <PackageReference Include="Omnia.Fx.Models" Version="7.0.1" />
+    <PackageReference Include="Omnia.Fx.NetCore" Version="7.0.1" />
+    <PackageReference Include="Omnia.WebContentManagement.Fx" Version="7.0.0" />
+  </ItemGroup>
+
+</Project>

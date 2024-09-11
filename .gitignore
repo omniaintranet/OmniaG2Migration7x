@@ -1,0 +1,39 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules
+packages
+
+# Build generated files
+Dist
+.cache-loader
+package-lock.json
+
+# OSX
+.DS_Store
+
+# Visual Studio files
+.ntvs_analysis.dat
+.vs
+bin
+obj
+
+.vscode
+
+# Exclude local certs and secrets
+*.pem
+*.cer
+*.pfx
+*.key
+*.crt
+**/azurecreds.json
+
+# Exclude production app settings
+**/AppSettings/**/*.json
+
+# Exclude all JS generated file
+
+**/Extensions/**/*.js
