@@ -40,17 +40,17 @@ namespace Omnia.Migration.Core.Http
         {
             var parameters = new NameValueCollection()
                 {
-                    { "publishingappid", MigrationSettings.Value.WCMContextSettings.PublishingAppId.ToString() }                 
+                    { "publishingappid", MigrationSettings.Value.WCMContextSettings.PublishingAppId.ToString() }
                 };
             var headers = new NameValueCollection()
                 {
                     { "Cookie", MigrationSettings.Value.MigrateCustomLink.Cookie },
-                    { "Accept",MigrationSettings.Value.MigrateCustomLink.Accept }                    
+                    { "Accept",MigrationSettings.Value.MigrateCustomLink.Accept }
                 };
             MigrationSettings.Value.MigrateCustomLink.MigrateCustomLinktoG2 = true;
-            var httpResponse = await PostAsJsonAsync(HttpContract.Navigation.Routes.CreatenNode, request, parameters: parameters,headers:headers);
+            var httpResponse = await PostAsJsonAsync(HttpContract.Navigation.Routes.CreatenNode, request, parameters: parameters, headers: headers);
             var apiResponse = httpResponse.Content.ReadAsJsonAsync<ApiResponse<INavigationNode>>();
-            
+
 
             return await apiResponse;
         }
@@ -216,6 +216,61 @@ namespace Omnia.Migration.Core.Http
         }
 
         ValueTask<ApiResponse<MovePageCollectionResult>> HttpContract.Navigation.Interface.MovePageCollectionAsync(MovePageCollRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<INavigationNode>> HttpContract.Navigation.Interface.CreateAsync(CreateNavigationRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<INavigationNode>> HttpContract.Navigation.Interface.UpdateNodeDataAsync(INavigationNode nodeToUpdate)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<MoveNavigationNodeResult>> HttpContract.Navigation.Interface.MoveAsync(MoveRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<MovePageCollectionValidationResult>> HttpContract.Navigation.Interface.ValidateMovingPageCollectionAsync(MovePageCollRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<IList<INavigationNode>>> HttpContract.Navigation.Interface.GetParentNodesAsync(INavigationNode node, int nodeTypes)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<IList<INavigationNode>>> HttpContract.Navigation.Interface.GetChildrenAsync(INavigationNode node, int nodeTypes, int depth)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<Dictionary<int, INavigationNode>>> HttpContract.Navigation.Interface.GetNodesById(int[] nodeIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<NavigationResult>> HttpContract.Navigation.Interface.GetNavigationTreeAsync(string path, int nodeTypes)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<NavigationResult>> HttpContract.Navigation.Interface.GetNavigationTreeAsync(int nodeId, int nodeTypes)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse<Dictionary<PageId, IList<IPageNavigationNode>>>> HttpContract.Navigation.Interface.GetPageNavigationNodesAsync(PageId[] pageIds, int nodeTypes)
+        {
+            throw new NotImplementedException();
+        }
+
+        ValueTask<ApiResponse> HttpContract.Navigation.Interface.DeleteLinkNavigationNodeAsync(int id)
         {
             throw new NotImplementedException();
         }
