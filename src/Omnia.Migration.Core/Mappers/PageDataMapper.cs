@@ -27,7 +27,7 @@ namespace Omnia.Migration.Core.Mappers
         public static void MapPageData(PageNavigationMigrationItem page, Dictionary<int, PublishedVersionPageData<PageData>> pageTypes, MigrationSettings settings, ItemQueryResult<IResolvedIdentity> Identities)
         {
             EnsureDataFormat(page);
-           
+
             MapSystemProperties(page, Identities);
             MapEnterpriseProperties(page, settings.WCMContextSettings, Identities);
             MapLayout(page, pageTypes, settings.WCMContextSettings);
@@ -35,7 +35,7 @@ namespace Omnia.Migration.Core.Mappers
 
         private static void MapLayout(PageNavigationMigrationItem page, Dictionary<int, PublishedVersionPageData<PageData>> pageTypes, WCMContextSettings wcmSettings)
         {
-            var layoutsMap = wcmSettings.LayoutMappings;                        
+            var layoutsMap = wcmSettings.LayoutMappings;
 
             string glueLayoutId = (page.GlueLayoutId ?? Guid.Empty).ToString().ToLower();
             LayoutMapping layoutMapping = null;
@@ -49,11 +49,11 @@ namespace Omnia.Migration.Core.Mappers
                 layoutMapping = layoutsMap[Guid.Empty.ToString()];
             }
 
-            page.PageData.ParentLayoutPageId = layoutMapping.LayoutId;            
+            page.PageData.ParentLayoutPageId = layoutMapping.LayoutId;
 
             MapLayoutBlockData(page, layoutMapping, wcmSettings);
             MapCustomBlockData(page, layoutMapping, pageTypes, wcmSettings);
-        } 
+        }
 
         //Hieu added
         private static string GetSystemPropUserIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
@@ -62,7 +62,7 @@ namespace Omnia.Migration.Core.Mappers
             {
                 if (item.Username.Value.Text.ToLower() == email.ToLower())
                 {
-                    return item.Id+"[1]";
+                    return item.Id + "[1]";
                 }
             }
             return null;
@@ -71,7 +71,7 @@ namespace Omnia.Migration.Core.Mappers
 
         private static void MapEnterpriseProperties(PageNavigationMigrationItem page, WCMContextSettings wcmSettings, ItemQueryResult<IResolvedIdentity> Identities)
         {
-            var propertiesMap = wcmSettings.EnterprisePropertiesMappings;                        
+            var propertiesMap = wcmSettings.EnterprisePropertiesMappings;
 
             if (page.PageData.EnterpriseProperties == null || propertiesMap == null)
                 return;
@@ -81,7 +81,7 @@ namespace Omnia.Migration.Core.Mappers
             //newProps.Add("title", page.PageData.Title);
             //Set defaut value for custom property for Kungsbacka
             // newProps.AddOrUpdateTaxonomy("kbkPageType", new Guid("72d6c60d-0877-459e-bd4f-a6e619731904"));            
-            newProps.Add("title",((PlainPageData) page.PageData).Title);
+            newProps.Add("title", ((PlainPageData)page.PageData).Title);
             newProps.Add("OmniaObjectType", "[\"ef2f10ff-c790-44f3-9219-3d2577a6fcc8\"]");
 
             var propsToMap = page.PageData.EnterpriseProperties.Keys.Where(key => propertiesMap.ContainsKey(key)).ToList();
@@ -126,7 +126,8 @@ namespace Omnia.Migration.Core.Mappers
                         newProps.Add(newProp.PropertyName, newDateTimePropertyValue);
                         break;
                     case EnterprisePropertyType.Object:
-                        if (propValue.HasValues) {
+                        if (propValue.HasValues)
+                        {
                             var newJsonObjPropertyValue = propValue;
                             newProps.Add(newProp.PropertyName, newJsonObjPropertyValue);
                         }
@@ -137,12 +138,7 @@ namespace Omnia.Migration.Core.Mappers
                         break;
                 }
             }
-            //newProps.Add("TSC_PageType", JToken.FromObject(new List<string> { "08ad2c2b-4788-40f0-90b9-1b831a960c56" })); //News
 
-            //if(wcmSettings.DefaultSVGViewerProperty!=null)
-            //{
-            //    newProps.AddOrUpdateMediaBlockProperty(wcmSettings.DefaultSVGViewerProperty, null); //SVG
-            //}            
             page.PageData.EnterpriseProperties = newProps;
         }
 
@@ -162,6 +158,9 @@ namespace Omnia.Migration.Core.Mappers
                 //Hieu rem
                 //page.CreatedBy = page.PageData.EnterpriseProperties[Constants.BuiltInEnterpriseProperties.CreatedBy].ToString();
                 page.CreatedBy = GetSystemPropUserIdentitybyEmail(Identities, page.PageData.EnterpriseProperties[Constants.BuiltInEnterpriseProperties.CreatedBy].ToString());
+            // Thoan modify
+
+
             else if (page.PageData.EnterpriseProperties.ContainsKey(Constants.BuiltInEnterpriseProperties.CreatedByUpperCase))
             {
                 //Hieu rem
@@ -173,7 +172,7 @@ namespace Omnia.Migration.Core.Mappers
             else if (page.PageData.EnterpriseProperties.ContainsKey(Constants.BuiltInEnterpriseProperties.ModifiedAtUpperCase))
             {
                 //Hieu rem
-                page.ModifiedAt =page.PageData.EnterpriseProperties[Constants.BuiltInEnterpriseProperties.ModifiedAtUpperCase].ToString();
+                page.ModifiedAt = page.PageData.EnterpriseProperties[Constants.BuiltInEnterpriseProperties.ModifiedAtUpperCase].ToString();
             }
             else if (page.PageData.EnterpriseProperties.ContainsKey(Constants.BuiltInEnterpriseProperties.ModifiedAtUpperCase2))
             {
@@ -211,10 +210,10 @@ namespace Omnia.Migration.Core.Mappers
             }
 
             if (!layoutMapping.RelatedLinksBlock.IsNullOrEmpty())
-            {             
+            {
                 var relatedLinksBlockSettings = CreateBlockDataForRelatedLinks(page, wcmSettings);
                 //page.PageData.LayoutData.BlockData[layoutMapping.RelatedLinksBlock.Value] = relatedLinksBlockSettings;
-                page.PageData.EnterpriseProperties[wcmSettings.DefaultRelatedLinksProperty] = JToken.FromObject(relatedLinksBlockSettings.Data);                
+                page.PageData.EnterpriseProperties[wcmSettings.DefaultRelatedLinksProperty] = JToken.FromObject(relatedLinksBlockSettings.Data);
             }
             if (!layoutMapping.UseAutoMapping)
             {
@@ -227,26 +226,26 @@ namespace Omnia.Migration.Core.Mappers
                 //    //page.PageData.LayoutData.BlockData[layoutMapping.RelatedLinksBlock.Value] = relatedLinksBlockSettings;
                 //    page.PageData.EnterpriseProperties[wcmSettings.DefaultRelatedLinksProperty] = JToken.FromObject(relatedLinksBlockSettings.Data);
                 //}    
-            }    
-                
+            }
+
 
             //}
-                /*if (!layoutMapping.AccordionBlock.IsNullOrEmpty())
+            /*if (!layoutMapping.AccordionBlock.IsNullOrEmpty())
+            {
+                var accordionBlockSettins = page.BlockSettings.FirstOrDefault(x => x.ControlId == Constants.G1ControlIDs.Accordion);
+
+                if (accordionBlockSettins != null)
                 {
-                    var accordionBlockSettins = page.BlockSettings.FirstOrDefault(x => x.ControlId == Constants.G1ControlIDs.Accordion);
+                    page.BlockSettings.Remove(accordionBlockSettins);
+                    var accordionBlockSettings = BlockDataMapper.MapBlockData(accordionBlockSettins, wcmSettings);
+                    page.PageData.LayoutData.BlockData[layoutMapping.AccordionBlock.Value] = accordionBlockSettings;
 
-                    if (accordionBlockSettins != null)
+                    if (!string.IsNullOrEmpty(wcmSettings.DefaultAccordionProperty))
                     {
-                        page.BlockSettings.Remove(accordionBlockSettins);
-                        var accordionBlockSettings = BlockDataMapper.MapBlockData(accordionBlockSettins, wcmSettings);
-                        page.PageData.LayoutData.BlockData[layoutMapping.AccordionBlock.Value] = accordionBlockSettings;
-
-                        if (!string.IsNullOrEmpty(wcmSettings.DefaultAccordionProperty))
-                        {
-                            page.PageData.EnterpriseProperties[wcmSettings.DefaultAccordionProperty] = JToken.FromObject(accordionBlockSettings.Data);
-                        }
+                        page.PageData.EnterpriseProperties[wcmSettings.DefaultAccordionProperty] = JToken.FromObject(accordionBlockSettings.Data);
                     }
-                }*/
+                }
+            }*/
         }
 
         //Check for 6.0
@@ -281,13 +280,13 @@ namespace Omnia.Migration.Core.Mappers
                     //TODO: Write to report
                     continue;
                 }
-                
+
                 var newBlockData = BlockDataMapper.MapBlockData(block, wcmSettings);
-                
+
                 if (newBlockData != null)
                 {
                     var newBlockId = block.InstanceId;
-                    
+
                     //page.PageData.LayoutData.BlockData.Add(newBlockId, newBlockData);
                     //page.PageData.PropertyBag.Add($"blockprop-{newBlockId.ToString().ToLower()}", JToken.FromObject(newBlockData.Settings));
                     page.PageData.Layout.BlockSettings.AddOrUpdate(newBlockId, newBlockData.Settings);
@@ -309,18 +308,21 @@ namespace Omnia.Migration.Core.Mappers
                         AdditionalProperties = new Dictionary<string, JToken>()
                     };
                     newLayoutItem.AdditionalProperties["ElementName"] = newBlockData.GetElementName();
-                    newLayoutItem.AdditionalProperties["Settings"] = JToken.FromObject(new BlockLayoutItemSettings() {
-                        background = new BlockLayoutSettingsBackground {
+                    newLayoutItem.AdditionalProperties["Settings"] = JToken.FromObject(new BlockLayoutItemSettings()
+                    {
+                        background = new BlockLayoutSettingsBackground
+                        {
                             colors = new List<string> { "#fff" },
                             elevation = 0, // set elevation for setting style of block
                             //borderWidth = 1  // Set border of block to 1px 
                         }
                     });
-                    
+
                     layoutContainer.Items.Add(newLayoutItem);
-                    
+
                 }
-                else {
+                else
+                {
                     //TODO: Write to report
                 }
             }
@@ -334,11 +336,11 @@ namespace Omnia.Migration.Core.Mappers
             List<RelatedLink> links = new List<RelatedLink>();
             if (page.RelatedLinks != null)
             {
-                links = page.RelatedLinks.Select(x => LinkMapper.MapRelatedLink(x, wcmSettings)).ToList();               
+                links = page.RelatedLinks.Select(x => LinkMapper.MapRelatedLink(x, wcmSettings)).ToList();
             }
-                
+
             return BlockDataFactory.CreateRelatedLinksBlockData(links);
-        }        
+        }
         private static Omnia.Migration.Models.LegacyWCM.BlockData CreateBlockDataForMainContent(PageNavigationMigrationItem page)
         {
             return BlockDataFactory.CreateContentBlockData(string.Empty, page.MainContent);
@@ -347,7 +349,7 @@ namespace Omnia.Migration.Core.Mappers
         /*private static BlockData CreateBlockDataForPageImage(PageNavigationMigrationItem page)
         {
             return BlockDataFactory.CreateMediaBlockData(string.Empty, true, false);
-        }     */   
+        }     */
 
         private static void EnsureDataFormat(PageNavigationMigrationItem migrationItem)
         {
@@ -373,9 +375,9 @@ namespace Omnia.Migration.Core.Mappers
                 migrationItem.Comments = new List<Models.Input.Social.G1Comment>();
             if (migrationItem.Likes == null)
                 migrationItem.Likes = new List<Models.Input.Social.G1Like>();
-                    
+
             if (migrationItem.PageData.EnterpriseProperties == null)
                 migrationItem.PageData.EnterpriseProperties = new PageEnterprisePropertyDictionary();
-        }     
+        }
     }
 }

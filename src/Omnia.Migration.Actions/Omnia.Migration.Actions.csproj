@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Omnia.Migration.Core\Omnia.Migration.Core.csproj" />
-    <ProjectReference Include="..\Omnia.Migration.Models\Omnia.Migration.Models.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Omnia.Migration.Core\Omnia.Migration.Core.csproj" />
+		<ProjectReference Include="..\Omnia.Migration.Models\Omnia.Migration.Models.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.SharePoint.Client.Portable">
-      <HintPath>..\Assemblies\CSOM\Microsoft.SharePoint.Client.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client.Runtime.Portable">
-      <HintPath>..\Assemblies\CSOM\Microsoft.SharePoint.Client.Runtime.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client.Runtime.WindowsStore">
-      <HintPath>..\..\..\..\Research\Token\Assemblies\CSOM.Online\Microsoft.SharePoint.Client.Runtime.WindowsStore.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client.UserProfiles.Portable">
-      <HintPath>..\Assemblies\CSOM\Microsoft.SharePoint.Client.UserProfiles.Portable.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Microsoft.SharePoint.Client.Portable">
+			<HintPath>..\Assemblies\CSOM\Microsoft.SharePoint.Client.Portable.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.SharePoint.Client.Runtime.Portable">
+			<HintPath>..\Assemblies\CSOM\Microsoft.SharePoint.Client.Runtime.Portable.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.SharePoint.Client.Runtime.WindowsStore">
+			<HintPath>..\..\..\..\Research\Token\Assemblies\CSOM.Online\Microsoft.SharePoint.Client.Runtime.WindowsStore.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.SharePoint.Client.UserProfiles.Portable">
+			<HintPath>..\Assemblies\CSOM\Microsoft.SharePoint.Client.UserProfiles.Portable.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 </Project>

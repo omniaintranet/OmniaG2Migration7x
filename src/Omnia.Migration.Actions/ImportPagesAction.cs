@@ -31,13 +31,14 @@ using DocumentFormat.OpenXml.Bibliography;
 using Omnia.Fx.Models.Identities;
 using Omnia.Fx.Models.Queries;
 using Omnia.WebContentManagement.Models.Pages;
+using Omnia.Fx.SharePoint.Fields.BuiltIn;
 
 namespace Omnia.Migration.Actions
 {
     public class ImportPagesAction : ParallelizableMigrationAction
     {
         private PageApiHttpClient PageApiHttpClient { get; }
-        private NavigationApiHttpClient NavigationApiHttpClient { get; }        
+        private NavigationApiHttpClient NavigationApiHttpClient { get; }
         private VariationApiHttpClient VariationApiHttpClient { get; }
         private SocialService SocialService { get; }
         private ImagesService ImagesService { get; }
@@ -50,6 +51,8 @@ namespace Omnia.Migration.Actions
         private Dictionary<Guid, string> PageIdMapping { get; set; }
         private IdentityApiHttpClient IdentityApiHttpClient { get; }
         public ItemQueryResult<IResolvedIdentity> Identities { get; set; }
+        public IList<IResolvedIdentity> da { get; set; }
+
 
         public ImportPagesAction(
             PageApiHttpClient pageApiHttpClient,
@@ -64,7 +67,7 @@ namespace Omnia.Migration.Actions
         {
             PageApiHttpClient = pageApiHttpClient;
             NavigationApiHttpClient = navigationApiHttpClient;
-            
+
             VariationApiHttpClient = variationApiHttpClient;
             ImagesService = imagesService;
             SocialService = socialService;
@@ -93,20 +96,63 @@ namespace Omnia.Migration.Actions
             Console.WriteLine("     1. Run for all data in json file");
             Console.WriteLine("     2. Run for only data in filter file");
             var filteroption = Console.ReadLine();
-            if(filteroption == "2")
+            if (filteroption == "2")
             {
                 input = FilterInput(input);
             }
-            var users = await IdentityApiHttpClient.GetUserIdentitybyEmail("");
-            if (users.Success)
+            // IEnumerable<string> m_oEnum = new string[] { "c-ooredsson@swep.net" };
+            // var usersun = await IdentityApiHttpClient.ResolveUserIdentitiesWithEmailsAsync(m_oEnum);
+
+            var query1 = new IdentityQuery()
             {
-                this.Identities = users.Data;
-            }
-            else
+                Types = new IdentityTypes[] { IdentityTypes.User }
+            };
+            // var usersun1 = await IdentityApiHttpClient.QueryAsync(query1);
+            // this.Identities = usersun1.Data;
+            // Thoan changed API
+            var user2 = await IdentityApiHttpClient.GetUserall(1, 500);
+            var userall = new List<ResolvedUserIdentity>();
+            userall = user2.Data.Value.ToList();
+
+
+            int totalnumber = user2.Data.Total;
+
+            int pagetotal = totalnumber / 5000;
+            if (pagetotal == 2)
             {
-                Logger.Log("Cannot get user identities, stop task!: " + users.ErrorMessage.ToString()); 
-                return;
+                var user6 = await IdentityApiHttpClient.GetUserall(2, 5000);
+                userall.AddRange(user6.Data.Value);
+                Console.WriteLine("Resolved " + (user6.Data.Value.Count() + 5000).ToString());
+
             }
+            if (pagetotal > 2)
+            {
+                for (int i = 2; i <= pagetotal; i++)
+                {
+
+
+                    var user6 = await IdentityApiHttpClient.GetUserall(i, 5000);
+
+                    userall.AddRange(user6.Data.Value);
+                    Console.WriteLine("Resolved " + (i * 5000).ToString());
+
+
+                }
+            }
+
+            Console.WriteLine("Resolved done");
+
+
+
+
+
+            IList<IResolvedIdentity> s = userall.Cast<IResolvedIdentity>().ToList();
+            var a = new ItemQueryResult<IResolvedIdentity>();
+            a.Items = s;
+
+            this.Identities = a;
+
+
             ProgressManager.Start(input.GetTotalCount());
             ImportPagesReport.Instance.Init(MigrationSettings.Value);
 
@@ -174,8 +220,8 @@ namespace Omnia.Migration.Actions
                         var linkNode = CloneHelper.CloneToLinkMigration(node);
                         migrationResult = await ImportNavigationLinkAsync(linkNode, parentNode);
                         break;
-                    case NavigationMigrationItemTypes.Page: 
-                        var pageNode =  CloneHelper.CloneToPageMigration(node);
+                    case NavigationMigrationItemTypes.Page:
+                        var pageNode = CloneHelper.CloneToPageMigration(node);
                         //pageNode.AdditionalProperties = node.AdditionalProperties;
                         //pageNode.ShowInCurrentNavigation = node.ShowInCurrentNavigation;
                         //pageNode.ParentId = node.ParentId;
@@ -200,7 +246,7 @@ namespace Omnia.Migration.Actions
                 migrationItem.Url = UrlHelper.MapUrl(migrationItem.Url,
                     MigrationSettings.Value.WCMContextSettings.SharePointUrl,
                     MigrationSettings.Value.WCMContextSettings.SharePointLocationMappings);
-                
+
                 migrationItem.ShowInCurrentNavigation = true;
                 migrationItem.ShowInMegaMenu = true;
 
@@ -238,7 +284,7 @@ namespace Omnia.Migration.Actions
                     //Hieu rem
                     //linkNode.NavigationData.Title.AddOrUpdate(variationId, migrationItem.Title);
 
-                    await NavigationApiHttpClient.UpdateNodeDataAsync(linkNode);                    
+                    await NavigationApiHttpClient.UpdateNodeDataAsync(linkNode);
                 }
                 else
                 {
@@ -272,7 +318,7 @@ namespace Omnia.Migration.Actions
 
         private async ValueTask<ApiResponse<INavigationNode>> ImportNavigationPageAsync(PageNavigationMigrationItem migrationItem, INavigationNode parentNode)
         {
-           string pagePath = migrationItem.UrlSegment;
+            string pagePath = migrationItem.UrlSegment;
             PageId pageId = 0;
             PageNavigationNode<PageNavigationData> pageNode = null;
 
@@ -280,7 +326,7 @@ namespace Omnia.Migration.Actions
             {
                 migrationItem.PageData.IsNullThrow(new Exception("PageData cannot be null"));
 
-                PageDataMapper.MapPageData(migrationItem, WcmData.PageTypes, MigrationSettings.Value, Identities);                
+                PageDataMapper.MapPageData(migrationItem, WcmData.PageTypes, MigrationSettings.Value, Identities);
 
                 var existingPage = NavigationNodeHelper.FindMatchingNavigationNode(migrationItem, WcmData.ExistingNodes, parentNode);
                 if (existingPage != null)
@@ -297,7 +343,7 @@ namespace Omnia.Migration.Actions
                 pagePath = pageNode.Path ?? pagePath;
 
                 await ImportTranslationPagesAsync(originalPage: pageNode.Page, translationPages: migrationItem.TranslationPages);
-                await SocialService.ImportCommentsAndLikesAsync(pageId, migrationItem, existingPage);
+                await SocialService.ImportCommentsAndLikesAsync(pageId, migrationItem, existingPage, Identities);
 
                 ImportPagesReport.Instance.AddSucceedItem(migrationItem, pageNode.Id, pageId, pagePath, migrationItem.PhysicalPageUniqueId);
 
@@ -312,13 +358,13 @@ namespace Omnia.Migration.Actions
                 ImportPagesReport.Instance.AddFailedItem(migrationItem, pageNode != null ? pageNode.Id : 0, pageId, pagePath, ex);
                 return ApiUtils.CreateErrorResponse<INavigationNode>(ex);
             }
-        } 
+        }
 
         private async ValueTask<PageNavigationNode<PageNavigationData>> AddNewPageAsync(PageNavigationMigrationItem migrationItem, INavigationNode parentNode)
         {
 
             var pageCreationRequest = CreatePageWithNavigationCreationRequest(migrationItem, parentNode);
-            var pageCreationResult = await PageApiHttpClient.CreatePage(pageCreationRequest);           
+            var pageCreationResult = await PageApiHttpClient.CreatePage(pageCreationRequest);
             pageCreationResult.EnsureSuccessCode();
 
             var pageNode = pageCreationResult.Data.PageNavigationNode;
@@ -329,12 +375,12 @@ namespace Omnia.Migration.Actions
             if (!migrationItem.ShowInMegaMenu || !migrationItem.ShowInCurrentNavigation)
             {
                 pageNode.NavigationData.HideInMegaMenu = !migrationItem.ShowInMegaMenu;
-                pageNode.NavigationData.HideInCurrentNavigation = !migrationItem.ShowInCurrentNavigation; 
+                pageNode.NavigationData.HideInCurrentNavigation = !migrationItem.ShowInCurrentNavigation;
                 needToUpdateNavigationData = true;
             }
 
             if (migrationItem.TranslationPages.Count > 0 && MigrationSettings.Value.ImportPagesSettings.ImportTranslationPages == true)
-            {                
+            {
                 foreach (var item in migrationItem.TranslationPages)
                 {
                     var variationId = (VariationId)MigrationSettings.Value.WCMContextSettings.VariationMappings[item.PageLanguage];
@@ -374,7 +420,7 @@ namespace Omnia.Migration.Actions
 
             if (MigrationSettings.Value.ImportPagesSettings.MigrateImages)
             {
-                await ImagesService.MigrateImagesAsync(pageCheckedOutVersion, ImportPagesReport.Instance, migrationItem);        
+                await ImagesService.MigrateImagesAsync(pageCheckedOutVersion, ImportPagesReport.Instance, migrationItem);
                 //return ApiUtils.CreateErrorResponse<INavigationNode>(ex);
             }
 
@@ -494,22 +540,23 @@ namespace Omnia.Migration.Actions
                 NodeData = nodeData,
                 Position = new NavigationPosition
                 {
-                    Parent = parentNode,              
+                    Parent = parentNode,
                 },
             };
         }
 
         private PageWithNavigationCreationRequest CreatePageWithNavigationCreationRequest(PageNavigationMigrationItem page, INavigationNode parentNode)
         {
-            page.PageData.PageRendererId = new Guid("8e012b42-4c13-4150-a11f-6b0b6300ee7c");  
-        
+            page.PageData.PageRendererId = new Guid("8e012b42-4c13-4150-a11f-6b0b6300ee7c");
+
             return new PageWithNavigationCreationRequest
             {
                 PageData = page.PageData,
                 UrlSegment = page.UrlSegment,
                 //Hieu rem
                 //ChildStructureType = WebContentManagement.Models.OmniaWCMEnums.ChildStructureType.Hierarchical,
-                Position = new NavigationPosition {
+                Position = new NavigationPosition
+                {
 
                     Parent = parentNode
                 }
@@ -568,10 +615,10 @@ namespace Omnia.Migration.Actions
 
                     var checkoutResult = await PageApiHttpClient.CheckOutAsync(existingVariationPage.Id);
                     checkoutResult.EnsureSuccessCode();
-                    
+
                     var pageCheckedOutVersion = checkoutResult.Data;
 
-                    PagesService.MergePageData(src: pageCheckedOutVersion.PageData, update: translationPage.PageData);                   
+                    PagesService.MergePageData(src: pageCheckedOutVersion.PageData, update: translationPage.PageData);
 
                     if (MigrationSettings.Value.ImportPagesSettings.MigrateImages)
                     {
@@ -582,12 +629,12 @@ namespace Omnia.Migration.Actions
                     publishResult.EnsureSuccessCode();
 
                     await PagesService.UpdatePageSystemInfoAsync(pageId: publishResult.Data.PageId, versionId: publishResult.Data.Id, page: translationPage);
-                    await SocialService.ImportCommentsAndLikesAsync(pageId: publishResult.Data.PageId, migrationItem: translationPage, existingPage: null);
+                    await SocialService.ImportCommentsAndLikesAsync(pageId: publishResult.Data.PageId, migrationItem: translationPage, existingPage: null, Identities);
                 }
                 else
                 {
 
-                    var pageCreationRequest = createPageVariationCreationRequest(translationPage,originalPage.Id,variation);
+                    var pageCreationRequest = createPageVariationCreationRequest(translationPage, originalPage.Id, variation);
 
                     var variationCreationResult = await PageApiHttpClient.CreateVariationPage(pageCreationRequest);
                     /*
@@ -609,7 +656,7 @@ namespace Omnia.Migration.Actions
                     publishResult.EnsureSuccessCode();
 
                     await PagesService.UpdatePageSystemInfoAsync(pageId: publishResult.Data.PageId, versionId: publishResult.Data.Id, page: translationPage);
-                    await SocialService.ImportCommentsAndLikesAsync(pageId: publishResult.Data.PageId, migrationItem: translationPage, existingPage: null);
+                    await SocialService.ImportCommentsAndLikesAsync(pageId: publishResult.Data.PageId, migrationItem: translationPage, existingPage: null, Identities);
                 }
             }
         }
