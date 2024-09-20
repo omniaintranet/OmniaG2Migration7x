@@ -111,9 +111,13 @@ namespace Omnia.Migration.Actions
             // this.Identities = usersun1.Data;
             // Thoan changed API
             var user2 = await IdentityApiHttpClient.GetUserall(1, 500);
+            if (user2 == null || user2.Data.Total == 0)
+            {
+                Console.WriteLine("Can not get Identities Please check again");
+            }
             var userall = new List<ResolvedUserIdentity>();
             userall = user2.Data.Value.ToList();
-
+            
 
             int totalnumber = user2.Data.Total;
 

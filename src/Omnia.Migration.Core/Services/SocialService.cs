@@ -60,30 +60,35 @@ namespace Omnia.Migration.Core.Services
 
         private async ValueTask<Omnia.Fx.Models.Social.Comment> ImportCommentAsync(PageId pageId, Guid? parentId, G1Comment comment, ItemQueryResult<IResolvedIdentity> Identities)
         {
+
             var newComment = SocialMapper.MapComment(pageId, parentId, comment, Identities);
-            var addCommentResult = await SocialApiHttpClient.AddComment(newComment);
-            addCommentResult.EnsureSuccessCode();
-            await UpdateComments(Identities, addCommentResult.Data, comment);
-
-            if (comment.Likes != null && comment.Likes.Count > 0)
+            if (newComment.CreatedBy != null)
             {
-                foreach (var like in comment.Likes)
+                var addCommentResult = await SocialApiHttpClient.AddComment(newComment);
+                addCommentResult.EnsureSuccessCode();
+                await UpdateComments(Identities, addCommentResult.Data, comment);
+
+                if (comment.Likes != null && comment.Likes.Count > 0)
                 {
-                    // await ImportLikeAsync(pageId, addCommentResult.Data.Id, like);
+                    foreach (var like in comment.Likes)
+                    {
+                        // await ImportLikeAsync(pageId, addCommentResult.Data.Id, like);
 
-                    await DBAddLike(pageId, like, Identities, addCommentResult.Data.Id.ToString());
+                        await DBAddLike(pageId, like, Identities, addCommentResult.Data.Id.ToString());
+                    }
                 }
-            }
 
-            if (comment.Children != null && comment.Children.Count > 0)
-            {
-                foreach (var childComment in comment.Children)
+                if (comment.Children != null && comment.Children.Count > 0)
                 {
-                    await ImportCommentAsync(pageId, addCommentResult.Data.Id, childComment, Identities);
+                    foreach (var childComment in comment.Children)
+                    {
+                        await ImportCommentAsync(pageId, addCommentResult.Data.Id, childComment, Identities);
+                    }
                 }
-            }
 
-            return addCommentResult.Data;
+                return addCommentResult.Data;
+            }
+            return null;
         }
 
         private async Task ImportLikeAsync(PageId pageId, Guid? commentId, G1Like like)
@@ -141,19 +146,22 @@ namespace Omnia.Migration.Core.Services
         }
         private async Task DBAddLike(int pageId, G1Like like, ItemQueryResult<IResolvedIdentity> Identities, string commentID)
         {
-            using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
+            var ICreatedby = GetIdentitybyEmail(Identities, like.CreatedBy);
+            string Iuser = ICreatedby.Id.ToString() + "[1]";
+            if (ICreatedby != null)
             {
 
-                var ICreatedby = GetIdentitybyEmail(Identities, like.CreatedBy);
-                string Iuser = ICreatedby.Id.ToString() + "[1]";
+                using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
+                {
 
-                await connection.ExecuteAsync(@"
+                    await connection.ExecuteAsync(@"
                         INSERT INTO  LIKES (CreatedBy,ModifiedBy,CreatedAt,ModifiedAt,CommentId,TopicId,ReactionType) VALUES (@CreatedBy,@ModifiedBy,@CreatedAt,@ModifiedAt,@CommentId,'page-' + @PageId,'1' )", new { PageId = pageId.ToString(), CreatedAt = like.CreatedAt, ModifiedAt = like.ModifiedAt, CreatedBy = Iuser, CommentId = commentID, ModifiedBy = Iuser });
 
 
 
 
 
+                }
             }
         }
 
@@ -163,7 +171,6 @@ namespace Omnia.Migration.Core.Services
             using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
             {
                 var clientId = MigrationSettings.Value.OmniaSecuritySettings.ClientId.ToString();
-
 
                 var ICreatedby = GetIdentitybyEmail(Identities, comment.CreatedBy);
                 string Iuser = ICreatedby.Id.ToString() + "[1]";
