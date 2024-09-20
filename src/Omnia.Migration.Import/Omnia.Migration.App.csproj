@@ -60,6 +60,9 @@
 		<None Update="appsettings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="appsettings.News.Cycle.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Appsettings\Adventrix G2\appsettings.AdventrixG2.Links.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
