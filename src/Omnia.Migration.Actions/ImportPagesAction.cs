@@ -82,15 +82,7 @@ namespace Omnia.Migration.Actions
         {
             ProgressManager = progressManager;
             List<NavigationMigrationItem> input = ReadInput();
-            //try
-            //{
-            //    var filter = input.Where(x => x.AdditionalProperties.ContainsKey("UrlSegment") && x.AdditionalProperties["UrlSegment"].ToString() == "Outlook-archived-e-mails-issue-now-resolved").ToList();
-            //    input = filter.ToList();
-            //}
-            //catch (Exception ex)
-            //{
-            //    var test = ex;
-            //}
+            
 
             Console.WriteLine("Select input file to run:....");
             Console.WriteLine("     1. Run for all data in json file");
@@ -103,57 +95,40 @@ namespace Omnia.Migration.Actions
             // IEnumerable<string> m_oEnum = new string[] { "c-ooredsson@swep.net" };
             // var usersun = await IdentityApiHttpClient.ResolveUserIdentitiesWithEmailsAsync(m_oEnum);
 
-            var query1 = new IdentityQuery()
-            {
-                Types = new IdentityTypes[] { IdentityTypes.User }
-            };
-            // var usersun1 = await IdentityApiHttpClient.QueryAsync(query1);
-            // this.Identities = usersun1.Data;
-            // Thoan changed API
-            var user2 = await IdentityApiHttpClient.GetUserall(1, 500);
+           
+            // Thoan modified 7.6 changed API get user by paging 5000
+            var user2 = await IdentityApiHttpClient.GetUserall(1, 5000);
             if (user2 == null || user2.Data.Total == 0)
             {
                 Console.WriteLine("Can not get Identities Please check again");
             }
             var userall = new List<ResolvedUserIdentity>();
-            userall = user2.Data.Value.ToList();
-            
+            userall = user2.Data.Value.ToList();            
 
             int totalnumber = user2.Data.Total;
 
             int pagetotal = totalnumber / 5000;
-            if (pagetotal == 2)
+            if (pagetotal == 1)
             {
                 var user6 = await IdentityApiHttpClient.GetUserall(2, 5000);
                 userall.AddRange(user6.Data.Value);
                 Console.WriteLine("Resolved " + (user6.Data.Value.Count() + 5000).ToString());
 
             }
-            if (pagetotal > 2)
-            {
+            if (pagetotal > 1)            {
                 for (int i = 2; i <= pagetotal; i++)
                 {
-
-
                     var user6 = await IdentityApiHttpClient.GetUserall(i, 5000);
-
                     userall.AddRange(user6.Data.Value);
                     Console.WriteLine("Resolved " + (i * 5000).ToString());
 
-
                 }
             }
-
             Console.WriteLine("Resolved done");
-
-
-
-
 
             IList<IResolvedIdentity> s = userall.Cast<IResolvedIdentity>().ToList();
             var a = new ItemQueryResult<IResolvedIdentity>();
             a.Items = s;
-
             this.Identities = a;
 
 

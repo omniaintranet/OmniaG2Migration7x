@@ -40,9 +40,10 @@ namespace Omnia.Migration.Core.Services
             if (MigrationSettings.Value.ImportPagesSettings.ImportLikesAndComments)
             {
                 if (existingPage != null)
-                    await DeleteOldCommentsAndLikesIfNeededAsync((int)pageId, migrationItem);
+                    //  await DeleteOldCommentsAndLikesIfNeededAsync((int)pageId, migrationItem);
+                    await DeleteOldCommentsAndLikesAsync((int)pageId, migrationItem);
 
-                var commentIdMap = new Dictionary<Guid, Guid>();
+                  var commentIdMap = new Dictionary<Guid, Guid>();
 
                 foreach (var comment in migrationItem.Comments)
                 {
@@ -73,7 +74,7 @@ namespace Omnia.Migration.Core.Services
                     foreach (var like in comment.Likes)
                     {
                         // await ImportLikeAsync(pageId, addCommentResult.Data.Id, like);
-
+                        // Thoan modified 7.6
                         await DBAddLike(pageId, like, Identities, addCommentResult.Data.Id.ToString());
                     }
                 }
@@ -118,6 +119,25 @@ namespace Omnia.Migration.Core.Services
                 }
             }
         }
+        private async Task DeleteOldCommentsAndLikesAsync(int pageId, PageNavigationMigrationItem migrationItem)
+        {
+            using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
+            {
+                var clientId = MigrationSettings.Value.OmniaSecuritySettings.ClientId.ToString();
+
+                if (migrationItem.Comments.Count > 0)
+                {
+                    await connection.ExecuteAsync(@"
+                        DELETE from Comments where TopicId='page-' + @PageId", new { PageId = pageId.ToString() });
+                }
+
+                if (migrationItem.Likes.Count > 0)
+                {
+                    await connection.ExecuteAsync(@"
+                        DELETE from Likes where TopicId='page-' + @PageId", new { PageId = pageId.ToString() });
+                }
+            }
+        }
         private async Task UpdateDateLikes(int pageId, PageNavigationMigrationItem migrationItem, ItemQueryResult<IResolvedIdentity> Identities)
         {
             using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
@@ -144,20 +164,20 @@ namespace Omnia.Migration.Core.Services
                 }
             }
         }
+        // Thoan modified 7.6
         private async Task DBAddLike(int pageId, G1Like like, ItemQueryResult<IResolvedIdentity> Identities, string commentID)
         {
             var ICreatedby = GetIdentitybyEmail(Identities, like.CreatedBy);
-            string Iuser = ICreatedby.Id.ToString() + "[1]";
+          
             if (ICreatedby != null)
             {
+                string Iuser = ICreatedby.Id.ToString() + "[1]";
 
                 using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
                 {
 
                     await connection.ExecuteAsync(@"
                         INSERT INTO  LIKES (CreatedBy,ModifiedBy,CreatedAt,ModifiedAt,CommentId,TopicId,ReactionType) VALUES (@CreatedBy,@ModifiedBy,@CreatedAt,@ModifiedAt,@CommentId,'page-' + @PageId,'1' )", new { PageId = pageId.ToString(), CreatedAt = like.CreatedAt, ModifiedAt = like.ModifiedAt, CreatedBy = Iuser, CommentId = commentID, ModifiedBy = Iuser });
-
-
 
 
 
