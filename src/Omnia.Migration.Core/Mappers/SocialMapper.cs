@@ -26,7 +26,7 @@ namespace Omnia.Migration.Core.Mappers
         }
         public static Omnia.Fx.Models.Social.Comment MapComment(int pageId, Guid? parentId, G1Comment comment, ItemQueryResult<IResolvedIdentity> Identities)
         {
-
+            // Thoan modified 7.6 
             return new Omnia.Fx.Models.Social.Comment()
             {
                 Content = comment.Content,
@@ -39,7 +39,8 @@ namespace Omnia.Migration.Core.Mappers
             };
         }
         public static Omnia.Fx.Models.Social.Like MapLike(int pageId, G1Like like, ItemQueryResult<IResolvedIdentity> Identities)
-        {
+        { 
+            // Thoan modified 7.6
             return new Omnia.Fx.Models.Social.Like()
             {
                 CommentId = like.CommentId,
@@ -61,6 +62,7 @@ namespace Omnia.Migration.Core.Mappers
             }
             return null;
         }
+        // Thoan modified 7.6
         private static Identity GetIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
         {
             foreach (ResolvedUserIdentity item in Identities.Items)
