@@ -100,7 +100,9 @@ namespace Omnia.Migration.Actions
             var user2 = await IdentityApiHttpClient.GetUserall(1, 5000);
             if (user2 == null || user2.Data.Total == 0)
             {
-                Console.WriteLine("Can not get Identities Please check again");
+                throw new Exception("Can not get Identities Please check again");
+               // Console.WriteLine("Can not get Identities Please check again");
+
             }
             var userall = new List<ResolvedUserIdentity>();
             userall = user2.Data.Value.ToList();            
@@ -116,7 +118,7 @@ namespace Omnia.Migration.Actions
 
             }
             if (pagetotal > 1)            {
-                for (int i = 2; i <= pagetotal; i++)
+                for (int i = 2; i <= pagetotal+1; i++)
                 {
                     var user6 = await IdentityApiHttpClient.GetUserall(i, 5000);
                     userall.AddRange(user6.Data.Value);
