@@ -32,6 +32,7 @@ using Omnia.Fx.Models.Identities;
 using Omnia.Fx.Models.Queries;
 using Omnia.WebContentManagement.Models.Pages;
 using Omnia.Fx.SharePoint.Fields.BuiltIn;
+using Omnia.Fx.Models.Layouts;
 
 namespace Omnia.Migration.Actions
 {
@@ -79,14 +80,14 @@ namespace Omnia.Migration.Actions
             MigrationSettings = migrationSettings;
             PageIdMapping = new Dictionary<Guid, string>();
             IdentityApiHttpClient = identityApiHttpClient;
-            UserService= userService;
+            UserService = userService;
         }
 
         public override async Task StartAsync(IProgressManager progressManager)
         {
             ProgressManager = progressManager;
             List<NavigationMigrationItem> input = ReadInput();
-            
+
 
             Console.WriteLine("Select input file to run:....");
             Console.WriteLine("     1. Run for all data in json file");
@@ -99,45 +100,10 @@ namespace Omnia.Migration.Actions
             // IEnumerable<string> m_oEnum = new string[] { "c-ooredsson@swep.net" };
             // var usersun = await IdentityApiHttpClient.ResolveUserIdentitiesWithEmailsAsync(m_oEnum);
 
-            var usersun = await UserService.LoadUserIdentity();
-            // Thoan modified 7.6 changed API get user by paging 5000
-            //var user2 = await IdentityApiHttpClient.GetUserall(1, 5000);
-            //if (user2 == null || user2.Data.Total == 0)
-            //{
-            //    throw new Exception("Can not get Identities Please check again");
-            //   // Console.WriteLine("Can not get Identities Please check again");
+            //var usersun = await UserService.LoadUserIdentity();
 
-            //}
-            //var userall = new List<ResolvedUserIdentity>();
-            //userall = user2.Data.Value.ToList();            
-
-            //int totalnumber = user2.Data.Total;
-
-            //int pagetotal = totalnumber / 5000;
-            //if (pagetotal == 1)
-            //{
-            //    var user6 = await IdentityApiHttpClient.GetUserall(2, 5000);
-            //    userall.AddRange(user6.Data.Value);
-            //    Console.WriteLine("Resolved " + (user6.Data.Value.Count() + 5000).ToString());
-
-            //}
-            //if (pagetotal > 1)            {
-            //    for (int i = 2; i <= pagetotal+1; i++)
-            //    {
-            //        var user6 = await IdentityApiHttpClient.GetUserall(i, 5000);
-            //        userall.AddRange(user6.Data.Value);
-            //        Console.WriteLine("Resolved " + (i * 5000).ToString());
-
-            //    }
-            //}
-            //Console.WriteLine("Resolved done");
-
-            //IList<IResolvedIdentity> s = userall.Cast<IResolvedIdentity>().ToList();
-            //var a = new ItemQueryResult<IResolvedIdentity>();
-            //a.Items = s;
-            this.Identities = await UserService.LoadUserIdentity();
-
-
+           this.Identities = await UserService.LoadUserIdentity();
+            
             ProgressManager.Start(input.GetTotalCount());
             ImportPagesReport.Instance.Init(MigrationSettings.Value);
 
@@ -163,6 +129,8 @@ namespace Omnia.Migration.Actions
                 ImportPagesReport.Instance.ExportTo(MigrationSettings.Value.OutputPath);
             }
         }
+        
+
         private List<NavigationMigrationItem> FilterInput(List<NavigationMigrationItem> input)
         {
             List<NavigationMigrationItem> filterInput = new List<NavigationMigrationItem>();
@@ -306,6 +274,8 @@ namespace Omnia.Migration.Actions
             string pagePath = migrationItem.UrlSegment;
             PageId pageId = 0;
             PageNavigationNode<PageNavigationData> pageNode = null;
+
+
 
             try
             {

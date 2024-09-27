@@ -87,6 +87,9 @@
 		<None Update="Appsettings\appsettings - Copy.IKEA.Sites.China.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Appsettings\appsettings.1.Swep.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Appsettings\appsettings. Copy.IKEA.sites.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

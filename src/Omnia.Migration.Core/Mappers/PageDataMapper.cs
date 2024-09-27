@@ -68,9 +68,33 @@ namespace Omnia.Migration.Core.Mappers
             return null;
         }
         //<<
+        public static string UpdatePageImage(PageNavigationMigrationItem item)
+        {
+            var blocks = item.BlockSettings;
+            if (blocks != null)
+            {
+                foreach (var block in blocks)
+                {
 
+                    if (block.ControlId.ToString().ToUpper() == "E1EB6412-5B5E-448F-B3A4-FCD3C7867A33")
+                    {
+                        
+                        var result = "<img alt=\"\" src=\"" + block.AdditionalProperties["Settings"]["imageUrl"].ToString() + "\"style=\"BORDER: px solid; \">";
+                        return result;
+                    }
+                }
+            }
+            return null;
+        }
         private static void MapEnterpriseProperties(PageNavigationMigrationItem page, WCMContextSettings wcmSettings, ItemQueryResult<IResolvedIdentity> Identities)
         {
+            // Fixed for SWEP Mediablock
+            var a = page.PageData.EnterpriseProperties["pageimage"];
+            if (a.ToString().Length < 1)
+            {
+                page.PageData.EnterpriseProperties["pageimage"] = UpdatePageImage(page);
+            }
+           
             var propertiesMap = wcmSettings.EnterprisePropertiesMappings;
 
             if (page.PageData.EnterpriseProperties == null || propertiesMap == null)
@@ -86,17 +110,13 @@ namespace Omnia.Migration.Core.Mappers
 
             var propsToMap = page.PageData.EnterpriseProperties.Keys.Where(key => propertiesMap.ContainsKey(key)).ToList();
 
+
             foreach (var oldProp in propsToMap)
             {
                 var propValue = page.PageData.EnterpriseProperties[oldProp];
                 var newProp = propertiesMap[oldProp];
 
-                //Custom property for Kungsbacka
-                //if(oldProp == "modifiedat")
-                //{
-                //    var reviewDate = DateTimeOffset.Parse(propValue.ToString());
-                //    newProps.AddOrUpdateDateTime("kbkReviewDate", reviewDate.AddYears(1));
-                //}    
+                
                 switch (newProp.PropertyType)
                 {
                     case EnterprisePropertyType.MainContent:
