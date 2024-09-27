@@ -8,29 +8,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Omnia.Migration.Core.Services;
 
 namespace Omnia.Migration.Core.Mappers
 {
     public static class SocialMapper
     {
-        public class identity
-        {
+       
 
-            public Guid id { get; set; }
-
-            //
-            // Summary:
-            //     The type of identity
-            public IdentityTypes type { get; set; }
-        }
         public static Omnia.Fx.Models.Social.Comment MapComment(int pageId, Guid? parentId, G1Comment comment, ItemQueryResult<IResolvedIdentity> Identities)
         {
+            
             // Thoan modified 7.6 
             return new Omnia.Fx.Models.Social.Comment()
             {
                 Content = comment.Content,
-                CreatedBy = (AuthenticatableIdentity)GetIdentitybyEmail(Identities, comment.CreatedBy),
+                CreatedBy = (AuthenticatableIdentity)UserMaper.GetIdentitybyEmail(Identities, comment.CreatedBy),
                 CreatedAt = comment.CreatedAt,
                 ModifiedAt = comment.ModifiedAt,
 
@@ -44,9 +37,9 @@ namespace Omnia.Migration.Core.Mappers
             return new Omnia.Fx.Models.Social.Like()
             {
                 CommentId = like.CommentId,
-                CreatedBy = (AuthenticatableIdentity)GetIdentitybyEmail(Identities, like.CreatedBy),
+                CreatedBy = (AuthenticatableIdentity)UserMaper.GetIdentitybyEmail(Identities, like.CreatedBy),
                 CreatedAt = like.CreatedAt,
-                ModifiedBy = (AuthenticatableIdentity)GetIdentitybyEmail(Identities, like.ModifiedBy),
+                ModifiedBy = (AuthenticatableIdentity)UserMaper.GetIdentitybyEmail(Identities, like.ModifiedBy),
                 ModifiedAt = like.ModifiedAt,
                 TopicId = Omnia.WebContentManagement.Fx.Constants.TopicPrefixes.Page + pageId
             };
@@ -63,17 +56,7 @@ namespace Omnia.Migration.Core.Mappers
             return null;
         }
         // Thoan modified 7.6
-        private static Identity GetIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
-        {
-            foreach (ResolvedUserIdentity item in Identities.Items)
-            {
-                if (item.Username.Value.Text.ToLower() == email.ToLower())
-                {
-                    return (Identity)item;
-                }
-            }
-            return null;
-        }
+       
     }
 
 }

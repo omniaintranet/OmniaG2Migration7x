@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
+using Omnia.Fx.Models.Identities;
+using Omnia.Fx.Models.Queries;
 using Omnia.Migration.Core.Extensions;
 using Omnia.Migration.Core.Http;
 using Omnia.Migration.Models.Configuration;
@@ -10,6 +12,7 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Omnia.Migration.Core.Mappers;
 
 namespace Omnia.Migration.Core.Services
 {
@@ -68,7 +71,7 @@ namespace Omnia.Migration.Core.Services
             }; 
         }
           
-        public async Task UpdatePageSystemInfoAsync(int pageId, int versionId, PageNavigationMigrationItem page)
+        public async Task UpdatePageSystemInfoAsync(int pageId, int versionId, PageNavigationMigrationItem page, ItemQueryResult<IResolvedIdentity> Identities)
         {
             if (string.IsNullOrEmpty(page.CreatedAt) ||
                 string.IsNullOrEmpty(page.CreatedBy) ||
@@ -76,19 +79,26 @@ namespace Omnia.Migration.Core.Services
                 string.IsNullOrEmpty(page.ModifiedBy))
                 return;
 
+            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(Identities, page.ModifiedBy);
+            var IcreatedBy= UserMaper.GetSystemPropUserIdentitybyEmail(Identities, page.CreatedBy);
+            if (string.IsNullOrEmpty(ImodifiedBy) || (string.IsNullOrEmpty(IcreatedBy)))
+                return;
+
+
             using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
             {
                 //Hieu rem: need to update here
+                // Thoan modified 7.6
                 await connection.ExecuteAsync(@"
                     Update Pages 
                     SET CreatedBy = @CreatedBy, CreatedAt = @CreatedAt, ModifiedBy = @ModifiedBy, ModifiedAt = @ModifiedAt 
-                    WHERE Id = @PageId", new { PageId = pageId, CreatedBy = page.CreatedBy, CreatedAt = page.CreatedAt, ModifiedBy = page.ModifiedBy, ModifiedAt = page.ModifiedAt });
+                    WHERE Id = @PageId", new { PageId = pageId, CreatedBy = IcreatedBy, CreatedAt = page.CreatedAt, ModifiedBy = ImodifiedBy, ModifiedAt = page.ModifiedAt });
 
 
                 await connection.ExecuteAsync(@"
                     Update VersionedPageData 
                     SET CreatedBy = @CreatedBy, CreatedAt = @CreatedAt, ModifiedBy = @ModifiedBy, ModifiedAt = @ModifiedAt 
-                    WHERE Id = @VersionId", new { VersionId = versionId, CreatedBy = page.CreatedBy, CreatedAt = page.CreatedAt, ModifiedBy = page.ModifiedBy, ModifiedAt = page.ModifiedAt });
+                    WHERE Id = @VersionId", new { VersionId = versionId, CreatedBy = IcreatedBy, CreatedAt = page.CreatedAt, ModifiedBy = ImodifiedBy, ModifiedAt = page.ModifiedAt });
             }
         }
 

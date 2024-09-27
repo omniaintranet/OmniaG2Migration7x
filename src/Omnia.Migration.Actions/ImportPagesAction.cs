@@ -43,6 +43,7 @@ namespace Omnia.Migration.Actions
         private SocialService SocialService { get; }
         private ImagesService ImagesService { get; }
         private PagesService PagesService { get; }
+        private UserService UserService { get; }
         private WcmService WcmService { get; }
         private IOptionsSnapshot<MigrationSettings> MigrationSettings { get; }
         //ILogger<ImportPagesAction> Logger { get; }
@@ -62,8 +63,10 @@ namespace Omnia.Migration.Actions
             ImagesService imagesService,
             IdentityApiHttpClient identityApiHttpClient,
             PagesService pagesService,
+            UserService userService,
             WcmService wcmService,
             IOptionsSnapshot<MigrationSettings> migrationSettings)
+
         {
             PageApiHttpClient = pageApiHttpClient;
             NavigationApiHttpClient = navigationApiHttpClient;
@@ -76,6 +79,7 @@ namespace Omnia.Migration.Actions
             MigrationSettings = migrationSettings;
             PageIdMapping = new Dictionary<Guid, string>();
             IdentityApiHttpClient = identityApiHttpClient;
+            UserService= userService;
         }
 
         public override async Task StartAsync(IProgressManager progressManager)
@@ -95,43 +99,43 @@ namespace Omnia.Migration.Actions
             // IEnumerable<string> m_oEnum = new string[] { "c-ooredsson@swep.net" };
             // var usersun = await IdentityApiHttpClient.ResolveUserIdentitiesWithEmailsAsync(m_oEnum);
 
-           
+            var usersun = await UserService.LoadUserIdentity();
             // Thoan modified 7.6 changed API get user by paging 5000
-            var user2 = await IdentityApiHttpClient.GetUserall(1, 5000);
-            if (user2 == null || user2.Data.Total == 0)
-            {
-                throw new Exception("Can not get Identities Please check again");
-               // Console.WriteLine("Can not get Identities Please check again");
+            //var user2 = await IdentityApiHttpClient.GetUserall(1, 5000);
+            //if (user2 == null || user2.Data.Total == 0)
+            //{
+            //    throw new Exception("Can not get Identities Please check again");
+            //   // Console.WriteLine("Can not get Identities Please check again");
 
-            }
-            var userall = new List<ResolvedUserIdentity>();
-            userall = user2.Data.Value.ToList();            
+            //}
+            //var userall = new List<ResolvedUserIdentity>();
+            //userall = user2.Data.Value.ToList();            
 
-            int totalnumber = user2.Data.Total;
+            //int totalnumber = user2.Data.Total;
 
-            int pagetotal = totalnumber / 5000;
-            if (pagetotal == 1)
-            {
-                var user6 = await IdentityApiHttpClient.GetUserall(2, 5000);
-                userall.AddRange(user6.Data.Value);
-                Console.WriteLine("Resolved " + (user6.Data.Value.Count() + 5000).ToString());
+            //int pagetotal = totalnumber / 5000;
+            //if (pagetotal == 1)
+            //{
+            //    var user6 = await IdentityApiHttpClient.GetUserall(2, 5000);
+            //    userall.AddRange(user6.Data.Value);
+            //    Console.WriteLine("Resolved " + (user6.Data.Value.Count() + 5000).ToString());
 
-            }
-            if (pagetotal > 1)            {
-                for (int i = 2; i <= pagetotal+1; i++)
-                {
-                    var user6 = await IdentityApiHttpClient.GetUserall(i, 5000);
-                    userall.AddRange(user6.Data.Value);
-                    Console.WriteLine("Resolved " + (i * 5000).ToString());
+            //}
+            //if (pagetotal > 1)            {
+            //    for (int i = 2; i <= pagetotal+1; i++)
+            //    {
+            //        var user6 = await IdentityApiHttpClient.GetUserall(i, 5000);
+            //        userall.AddRange(user6.Data.Value);
+            //        Console.WriteLine("Resolved " + (i * 5000).ToString());
 
-                }
-            }
-            Console.WriteLine("Resolved done");
+            //    }
+            //}
+            //Console.WriteLine("Resolved done");
 
-            IList<IResolvedIdentity> s = userall.Cast<IResolvedIdentity>().ToList();
-            var a = new ItemQueryResult<IResolvedIdentity>();
-            a.Items = s;
-            this.Identities = a;
+            //IList<IResolvedIdentity> s = userall.Cast<IResolvedIdentity>().ToList();
+            //var a = new ItemQueryResult<IResolvedIdentity>();
+            //a.Items = s;
+            this.Identities = await UserService.LoadUserIdentity();
 
 
             ProgressManager.Start(input.GetTotalCount());
@@ -408,7 +412,7 @@ namespace Omnia.Migration.Actions
             var publishResult = await PageApiHttpClient.PublishAsync(pageCheckedOutVersion);
             publishResult.EnsureSuccessCode();
 
-            await PagesService.UpdatePageSystemInfoAsync(pageId: pageId, versionId: publishResult.Data.Id, page: migrationItem);
+            await PagesService.UpdatePageSystemInfoAsync(pageId: pageId, versionId: publishResult.Data.Id, page: migrationItem, Identities);
 
             return pageNode;
         }
@@ -484,22 +488,14 @@ namespace Omnia.Migration.Actions
             var publishResult = await PageApiHttpClient.PublishAsync(pageCheckedOutVersion);
             publishResult.EnsureSuccessCode();
 
-            await PagesService.UpdatePageSystemInfoAsync(pageId: existingPage.Page.Id, versionId: publishResult.Data.Id, page: migrationItem);
+            await PagesService.UpdatePageSystemInfoAsync(pageId: existingPage.Page.Id, versionId: publishResult.Data.Id, page: migrationItem, Identities);
 
             return existingPage;
         }
 
         private CreateNavigationRequest CreateNavigationCreationRequest(LinkNavigationMigrationItem link, INavigationNode parentNode)
         {
-            //var language = MigrationSettings.Value.WCMContextSettings.Language;
-            //Hieu rem
-            //var nodeData = new NavigationData
-            //{
-            //    Title = new VariationString(), 
-            //    Type = 8,
-            //    RendererId = new Guid("2b416031-3750-4328-ae8e-41a0508939b1"),
-            //    AdditionalProperties = new Dictionary<string, JToken>()
-            //};
+            
 
             var nodeData = new LinkNavigationData
             {
@@ -609,7 +605,7 @@ namespace Omnia.Migration.Actions
                     var publishResult = await PageApiHttpClient.PublishAsync(pageCheckedOutVersion);
                     publishResult.EnsureSuccessCode();
 
-                    await PagesService.UpdatePageSystemInfoAsync(pageId: publishResult.Data.PageId, versionId: publishResult.Data.Id, page: translationPage);
+                    await PagesService.UpdatePageSystemInfoAsync(pageId: publishResult.Data.PageId, versionId: publishResult.Data.Id, page: translationPage, Identities);
                     await SocialService.ImportCommentsAndLikesAsync(pageId: publishResult.Data.PageId, migrationItem: translationPage, existingPage: null, Identities);
                 }
                 else
@@ -636,7 +632,7 @@ namespace Omnia.Migration.Actions
                     var publishResult = await PageApiHttpClient.PublishAsync(variationCreationResult.Data.CheckedOutVersion);
                     publishResult.EnsureSuccessCode();
 
-                    await PagesService.UpdatePageSystemInfoAsync(pageId: publishResult.Data.PageId, versionId: publishResult.Data.Id, page: translationPage);
+                    await PagesService.UpdatePageSystemInfoAsync(pageId: publishResult.Data.PageId, versionId: publishResult.Data.Id, page: translationPage, Identities);
                     await SocialService.ImportCommentsAndLikesAsync(pageId: publishResult.Data.PageId, migrationItem: translationPage, existingPage: null, Identities);
                 }
             }
