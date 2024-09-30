@@ -88,13 +88,15 @@ namespace Omnia.Migration.Core.Mappers
         }
         private static void MapEnterpriseProperties(PageNavigationMigrationItem page, WCMContextSettings wcmSettings, ItemQueryResult<IResolvedIdentity> Identities)
         {
-            // Fixed for SWEP Mediablock
-            var a = page.PageData.EnterpriseProperties["pageimage"];
-            if (a.ToString().Length < 1)
+            // Fixed for SWEP Mediablock 
+            if (page.PageData.EnterpriseProperties != null)
             {
-                page.PageData.EnterpriseProperties["pageimage"] = UpdatePageImage(page);
+                var a = page.PageData.EnterpriseProperties["pageimage"];
+                if (a.ToString().Length < 1)
+                {
+                    page.PageData.EnterpriseProperties["pageimage"] = UpdatePageImage(page);
+                }
             }
-           
             var propertiesMap = wcmSettings.EnterprisePropertiesMappings;
 
             if (page.PageData.EnterpriseProperties == null || propertiesMap == null)
