@@ -34,28 +34,31 @@ namespace Omnia.Migration.Core.Helpers
 
         private static void CorrectLayouts(NavigationMigrationItem navMigrationItem)
         {
-            var jsonObj = navMigrationItem.AdditionalProperties["PageData"];
-            jsonObj["Layout"] = JToken.FromObject(new Omnia.Fx.Models.Layouts.Layout());
-            //navMigrationItem.AdditionalProperties["PageData"] = jsonObj;
 
-
-            var jsonTranslations = navMigrationItem.AdditionalProperties["TranslationPages"];
-            var variations = jsonTranslations.ToObject<List<NavigationMigrationItem>>();
-            if (variations != null)
+            if (navMigrationItem.MigrationItemType == NavigationMigrationItemTypes.Page)
             {
-                foreach (var variation in variations)
+                var jsonObj = navMigrationItem.AdditionalProperties["PageData"];
+                jsonObj["Layout"] = JToken.FromObject(new Omnia.Fx.Models.Layouts.Layout());
+                //navMigrationItem.AdditionalProperties["PageData"] = jsonObj;
+
+
+                var jsonTranslations = navMigrationItem.AdditionalProperties["TranslationPages"];
+                var variations = jsonTranslations.ToObject<List<NavigationMigrationItem>>();
+                if (variations != null)
                 {
-                    var jsonObjvar = variation.AdditionalProperties["PageData"];
-                    jsonObjvar["Layout"] = JToken.FromObject(new Omnia.Fx.Models.Layouts.Layout()); 
+                    foreach (var variation in variations)
+                    {
+                        var jsonObjvar = variation.AdditionalProperties["PageData"];
+                        jsonObjvar["Layout"] = JToken.FromObject(new Omnia.Fx.Models.Layouts.Layout());
+                    }
+                    navMigrationItem.AdditionalProperties["TranslationPages"] = JToken.FromObject(variations);
                 }
-                navMigrationItem.AdditionalProperties["TranslationPages"] = JToken.FromObject(variations);
-            }
-            foreach (var child in navMigrationItem.Children)
-            {
-                CorrectLayouts(child);
+                foreach (var child in navMigrationItem.Children)
+                {
+                    CorrectLayouts(child);
+                }
             }
         }
-
         public static LinkNavigationMigrationItem CloneToLinkMigration(NavigationMigrationItem navMigrationItem)
         {
             return Clone<LinkNavigationMigrationItem>(navMigrationItem);

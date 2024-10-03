@@ -99,7 +99,7 @@ namespace Omnia.Migration.Actions
             // IEnumerable<string> m_oEnum = new string[] { "c-ooredsson@swep.net" };
             // var usersun = await IdentityApiHttpClient.ResolveUserIdentitiesWithEmailsAsync(m_oEnum);
 
-            var usersun = await UserService.LoadUserIdentity();
+           // var usersun = await UserService.LoadUserIdentity();
             // Thoan modified 7.6 changed API get user by paging 5000
             //var user2 = await IdentityApiHttpClient.GetUserall(1, 5000);
             //if (user2 == null || user2.Data.Total == 0)
