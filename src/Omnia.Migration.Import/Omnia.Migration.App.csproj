@@ -87,6 +87,30 @@
 		<None Update="Appsettings\appsettings - Copy.IKEA.Sites.China.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Appsettings\appsettings.News.US.Sing.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.News.BONA.Sing.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.News.BONA.Fr.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.News.BONA.Ger.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.News.BONA.SE.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.News.BONA.Aus.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.News.BONA.CEO.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.News.BONA.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Appsettings\appsettings. Copy.IKEA.sites.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

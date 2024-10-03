@@ -19,6 +19,7 @@ using UrlCombineLib;
 using Omnia.Migration.Core.Extensions;
 using Omnia.Fx.Models.Identities;
 using Omnia.Fx.Models.Queries;
+using Omnia.Migration.Models.Input.EnterpriseProperties;
 
 namespace Omnia.Migration.Core.Mappers
 {
@@ -82,7 +83,7 @@ namespace Omnia.Migration.Core.Mappers
             //Set defaut value for custom property for Kungsbacka
             // newProps.AddOrUpdateTaxonomy("kbkPageType", new Guid("72d6c60d-0877-459e-bd4f-a6e619731904"));            
             newProps.Add("title", ((PlainPageData)page.PageData).Title);
-            newProps.Add("OmniaObjectType", "[\"ef2f10ff-c790-44f3-9219-3d2577a6fcc8\"]");
+          //  newProps.Add("OmniaObjectType", "[\"ef2f10ff-c790-44f3-9219-3d2577a6fcc8\"]");
 
             var propsToMap = page.PageData.EnterpriseProperties.Keys.Where(key => propertiesMap.ContainsKey(key)).ToList();
 
@@ -91,12 +92,7 @@ namespace Omnia.Migration.Core.Mappers
                 var propValue = page.PageData.EnterpriseProperties[oldProp];
                 var newProp = propertiesMap[oldProp];
 
-                //Custom property for Kungsbacka
-                //if(oldProp == "modifiedat")
-                //{
-                //    var reviewDate = DateTimeOffset.Parse(propValue.ToString());
-                //    newProps.AddOrUpdateDateTime("kbkReviewDate", reviewDate.AddYears(1));
-                //}    
+                   
                 switch (newProp.PropertyType)
                 {
                     case EnterprisePropertyType.MainContent:
@@ -139,7 +135,49 @@ namespace Omnia.Migration.Core.Mappers
                 }
             }
 
-            page.PageData.EnterpriseProperties = newProps;
+            var a = new G1TaxonomyPropertyValue
+            {
+                Label = "News Article",
+                TermSetId = "a54ec88e-259f-4800-8a8f-b41c523fcb94",
+                TermGuid = "438cdd15-962d-4653-a1fe-2ed1d2a04c4a",
+                WssId = 1
+            };
+            var ob = new List<string> { "438cdd15-962d-4653-a1fe-2ed1d2a04c4a" };
+
+            var newTaxonomyPropValue1 = JToken.FromObject(ob);
+            newProps.Add("OmniaObjectType", newTaxonomyPropValue1);
+
+            if (newProps.ContainsKey("owcmpagecontact"))
+            {
+                if (newProps["owcmpagecontact"].First == null)
+                {
+                    var changeUser = EnterprisePropertyMapper.GetUserIdentitybyEmail(Identities, "webmaster@bona.com");
+
+                    var klist = new List<identity>() { changeUser };
+
+                    newProps["owcmpagecontact"] = JToken.FromObject(klist);
+                }
+                else if (newProps["owcmpagecontact"].First.ToString() == "")
+                {
+                    var changeUser = EnterprisePropertyMapper.GetUserIdentitybyEmail(Identities, "webmaster@bona.com");
+
+                    var klist = new List<identity>() { changeUser };
+
+                    newProps["owcmpagecontact"] = JToken.FromObject(klist);
+                }
+
+
+            }
+            else Console.WriteLine(page.UrlSegment.ToString());
+
+                page.PageData.EnterpriseProperties = newProps;
+
+          
+
+
+
+
+
         }
 
         private static void MapSystemProperties(PageNavigationMigrationItem page, ItemQueryResult<IResolvedIdentity> Identities)

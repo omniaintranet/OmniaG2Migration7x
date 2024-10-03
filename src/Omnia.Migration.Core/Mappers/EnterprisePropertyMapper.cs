@@ -81,7 +81,7 @@ namespace Omnia.Migration.Core.Mappers
                 return JToken.FromObject(EnterprisePropertyFactory.CreateDefaultMediaPropertyValue(imageSrc));
             }
         }
-        private static identity GetUserIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
+        public static identity GetUserIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
         { 
             foreach (ResolvedUserIdentity item in Identities.Items)
             {
