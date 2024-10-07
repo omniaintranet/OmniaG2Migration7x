@@ -84,7 +84,23 @@ namespace Omnia.Migration.Core.Services
 
            
         }
-         public  Identity GetIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
+        public async Task<ItemQueryResult<IResolvedIdentity>> LoadUserIdentityTEST()
+        {
+
+            var userFirstpage = await IdentityApiHttpClient.GetUserall(1, 50);
+            var userall = new List<ResolvedUserIdentity>();
+            userall = userFirstpage.Data.Value.ToList();
+
+
+            IList<IResolvedIdentity> s = userall.Cast<IResolvedIdentity>().ToList();
+            var a = new ItemQueryResult<IResolvedIdentity>();
+            a.Items = s;
+
+            return a;
+
+
+        }
+        public  Identity GetIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
         {
             foreach (ResolvedUserIdentity item in Identities.Items)
             {

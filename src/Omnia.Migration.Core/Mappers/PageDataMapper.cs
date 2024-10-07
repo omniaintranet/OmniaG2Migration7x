@@ -142,8 +142,8 @@ namespace Omnia.Migration.Core.Mappers
                 TermGuid = "438cdd15-962d-4653-a1fe-2ed1d2a04c4a",
                 WssId = 1
             };
-            var ob = new List<string> { "438cdd15-962d-4653-a1fe-2ed1d2a04c4a" };
-
+            //var ob = new List<string> { "438cdd15-962d-4653-a1fe-2ed1d2a04c4a" };
+            var ob = new List<string> { "a2e33e2f-22f2-4293-9906-dd2dcd70c27f" };
             var newTaxonomyPropValue1 = JToken.FromObject(ob);
             newProps.Add("OmniaObjectType", newTaxonomyPropValue1);
 
