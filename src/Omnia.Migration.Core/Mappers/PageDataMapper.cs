@@ -135,48 +135,7 @@ namespace Omnia.Migration.Core.Mappers
                 }
             }
 
-            var a = new G1TaxonomyPropertyValue
-            {
-                Label = "News Article",
-                TermSetId = "a54ec88e-259f-4800-8a8f-b41c523fcb94",
-                TermGuid = "438cdd15-962d-4653-a1fe-2ed1d2a04c4a",
-                WssId = 1
-            };
-            //var ob = new List<string> { "438cdd15-962d-4653-a1fe-2ed1d2a04c4a" };
-            var ob = new List<string> { "a2e33e2f-22f2-4293-9906-dd2dcd70c27f" };
-            var newTaxonomyPropValue1 = JToken.FromObject(ob);
-            newProps.Add("OmniaObjectType", newTaxonomyPropValue1);
-
-            if (newProps.ContainsKey("owcmpagecontact"))
-            {
-                if (newProps["owcmpagecontact"].First == null)
-                {
-                    var changeUser = EnterprisePropertyMapper.GetUserIdentitybyEmail(Identities, "webmaster@bona.com");
-
-                    var klist = new List<identity>() { changeUser };
-
-                    newProps["owcmpagecontact"] = JToken.FromObject(klist);
-                }
-                else if (newProps["owcmpagecontact"].First.ToString() == "")
-                {
-                    var changeUser = EnterprisePropertyMapper.GetUserIdentitybyEmail(Identities, "webmaster@bona.com");
-
-                    var klist = new List<identity>() { changeUser };
-
-                    newProps["owcmpagecontact"] = JToken.FromObject(klist);
-                }
-
-
-            }
-            else Console.WriteLine(page.UrlSegment.ToString());
-
                 page.PageData.EnterpriseProperties = newProps;
-
-          
-
-
-
-
 
         }
 
