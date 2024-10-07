@@ -19,6 +19,7 @@ using UrlCombineLib;
 using Omnia.Migration.Core.Extensions;
 using Omnia.Fx.Models.Identities;
 using Omnia.Fx.Models.Queries;
+using Omnia.Migration.Models.Input.EnterpriseProperties;
 
 namespace Omnia.Migration.Core.Mappers
 {
@@ -82,7 +83,7 @@ namespace Omnia.Migration.Core.Mappers
             //Set defaut value for custom property for Kungsbacka
             // newProps.AddOrUpdateTaxonomy("kbkPageType", new Guid("72d6c60d-0877-459e-bd4f-a6e619731904"));            
             newProps.Add("title", ((PlainPageData)page.PageData).Title);
-            newProps.Add("OmniaObjectType", "[\"ef2f10ff-c790-44f3-9219-3d2577a6fcc8\"]");
+          //  newProps.Add("OmniaObjectType", "[\"ef2f10ff-c790-44f3-9219-3d2577a6fcc8\"]");
 
             var propsToMap = page.PageData.EnterpriseProperties.Keys.Where(key => propertiesMap.ContainsKey(key)).ToList();
 
@@ -91,12 +92,7 @@ namespace Omnia.Migration.Core.Mappers
                 var propValue = page.PageData.EnterpriseProperties[oldProp];
                 var newProp = propertiesMap[oldProp];
 
-                //Custom property for Kungsbacka
-                //if(oldProp == "modifiedat")
-                //{
-                //    var reviewDate = DateTimeOffset.Parse(propValue.ToString());
-                //    newProps.AddOrUpdateDateTime("kbkReviewDate", reviewDate.AddYears(1));
-                //}    
+                   
                 switch (newProp.PropertyType)
                 {
                     case EnterprisePropertyType.MainContent:
@@ -139,6 +135,10 @@ namespace Omnia.Migration.Core.Mappers
                 }
             }
 
+                page.PageData.EnterpriseProperties = newProps;
+
+            //    newProps.AddOrUpdateMediaBlockProperty(wcmSettings.DefaultSVGViewerProperty, null); //SVG
+            //}            
             page.PageData.EnterpriseProperties = newProps;
         }
 

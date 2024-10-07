@@ -38,17 +38,17 @@ namespace Omnia.Migration.Core.Services
         public async Task ImportCommentsAndLikesAsync(PageId pageId, PageNavigationMigrationItem migrationItem, PageNavigationNode<PageNavigationData> existingPage, ItemQueryResult<IResolvedIdentity> Identities)
         {
             if (MigrationSettings.Value.ImportPagesSettings.ImportLikesAndComments)
-            {
+            { 
                 if (existingPage != null)
                     //  await DeleteOldCommentsAndLikesIfNeededAsync((int)pageId, migrationItem);
                     await DeleteOldCommentsAndLikesAsync((int)pageId, migrationItem);
 
-                  var commentIdMap = new Dictionary<Guid, Guid>();
+                //  var commentIdMap = new Dictionary<Guid, Guid>();
 
                 foreach (var comment in migrationItem.Comments)
                 {
                     var newComment = await ImportCommentAsync(pageId, null, comment, Identities);
-                    commentIdMap.Add(comment.Id, newComment.Id);
+                  //  commentIdMap.Add(comment.Id, newComment.Id);
                 }
 
                 foreach (var like in migrationItem.Likes)

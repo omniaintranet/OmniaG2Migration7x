@@ -78,6 +78,33 @@
 		<None Update="AppSettings\Alandia\appsettings.alandia.news.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Appsettings\appsettings.BONA.PO.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.BONA.MYEM.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.ABOUTME.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.1.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.BONA.NAV.US.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.BONA.NAV.SE.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.BONA.NAV.GER.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.BONA.NAV.SING.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.BONA.NAV.FR.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Appsettings\appsettings - Copy.IKEA.Sites.3.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -86,6 +113,12 @@
 		</None>
 		<None Update="Appsettings\appsettings - Copy.IKEA.Sites.China.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.BONA.NAV.AUS.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Appsettings\appsettings.News.US.Sing.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Appsettings\appsettings. Copy.IKEA.sites.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -205,9 +238,6 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Appsettings\appsettings.News.Cycle.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Appsettings\appsettings.News.Swep.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="IKEA\appsettings.IKEA.Test.Navi.json">

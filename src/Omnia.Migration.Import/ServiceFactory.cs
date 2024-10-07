@@ -70,6 +70,7 @@ namespace Omnia.Migration.App
                 .AddTransient<MyLinkApiHttpClient>()
                 // Services
                 .AddTransient<SocialService>()
+                 .AddTransient<UserService>()// Thoan Add
                 .AddTransient<ImagesService>()
                 .AddTransient<SPTokenService>()
                 .AddTransient<SitesService>()

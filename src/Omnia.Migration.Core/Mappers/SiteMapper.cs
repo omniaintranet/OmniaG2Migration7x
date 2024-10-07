@@ -15,7 +15,8 @@ namespace Omnia.Migration.Core.Mappers
 
         private static void MapEnterpriseProperties(SiteMigrationItem site, WCMContextSettings wcmSettings)
         {
-
+            
         }
+        
     }
 }

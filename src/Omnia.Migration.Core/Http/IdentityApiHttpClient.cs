@@ -125,5 +125,18 @@ namespace Omnia.Migration.Core.Http
 
             return await httpResponse.ValidateAndGetApiResponseAsync<ItemQueryResult<IResolvedIdentity>>();
         }
+        public static Identity GetIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
+        {
+            foreach (ResolvedUserIdentity item in Identities.Items)
+            {
+                if (item.Username.Value.Text.ToLower() == email.ToLower())
+                {
+                    return (Identity)item;
+                }
+            }
+            return null;
+        }
+        
+        
     }
 }
