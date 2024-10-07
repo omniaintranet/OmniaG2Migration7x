@@ -32,6 +32,12 @@ using Omnia.Fx.Models.Identities;
 using Omnia.Fx.Models.Queries;
 using Omnia.WebContentManagement.Models.Pages;
 using Omnia.Fx.SharePoint.Fields.BuiltIn;
+using Omnia.Fx.Models.Language;
+using System.Xml.Linq;
+using static Omnia.WebContentManagement.Models.Navigation.NavigationData;
+using Omnia.Fx.Models.Ux;
+using Omnia.Fx.Models.Manifests;
+using Omnia.WebContentManagement.Models.Blocks;
 
 namespace Omnia.Migration.Actions
 {
@@ -53,6 +59,7 @@ namespace Omnia.Migration.Actions
         private IdentityApiHttpClient IdentityApiHttpClient { get; }
         public ItemQueryResult<IResolvedIdentity> Identities { get; set; }
         public IList<IResolvedIdentity> da { get; set; }
+        public LanguageTag defaultLang= LanguageTag.EnUs;
 
 
         public ImportPagesAction(
@@ -96,45 +103,7 @@ namespace Omnia.Migration.Actions
             {
                 input = FilterInput(input);
             }
-            // IEnumerable<string> m_oEnum = new string[] { "c-ooredsson@swep.net" };
-            // var usersun = await IdentityApiHttpClient.ResolveUserIdentitiesWithEmailsAsync(m_oEnum);
-
-           // var usersun = await UserService.LoadUserIdentity();
-            // Thoan modified 7.6 changed API get user by paging 5000
-            //var user2 = await IdentityApiHttpClient.GetUserall(1, 5000);
-            //if (user2 == null || user2.Data.Total == 0)
-            //{
-            //    throw new Exception("Can not get Identities Please check again");
-            //   // Console.WriteLine("Can not get Identities Please check again");
-
-            //}
-            //var userall = new List<ResolvedUserIdentity>();
-            //userall = user2.Data.Value.ToList();            
-
-            //int totalnumber = user2.Data.Total;
-
-            //int pagetotal = totalnumber / 5000;
-            //if (pagetotal == 1)
-            //{
-            //    var user6 = await IdentityApiHttpClient.GetUserall(2, 5000);
-            //    userall.AddRange(user6.Data.Value);
-            //    Console.WriteLine("Resolved " + (user6.Data.Value.Count() + 5000).ToString());
-
-            //}
-            //if (pagetotal > 1)            {
-            //    for (int i = 2; i <= pagetotal+1; i++)
-            //    {
-            //        var user6 = await IdentityApiHttpClient.GetUserall(i, 5000);
-            //        userall.AddRange(user6.Data.Value);
-            //        Console.WriteLine("Resolved " + (i * 5000).ToString());
-
-            //    }
-            //}
-            //Console.WriteLine("Resolved done");
-
-            //IList<IResolvedIdentity> s = userall.Cast<IResolvedIdentity>().ToList();
-            //var a = new ItemQueryResult<IResolvedIdentity>();
-            //a.Items = s;
+          //  this.Identities = await UserService.LoadUserIdentityTEST();
             this.Identities = await UserService.LoadUserIdentity();
 
 
@@ -201,17 +170,13 @@ namespace Omnia.Migration.Actions
 
                 switch (node.MigrationItemType)
                 {
+                    
                     case NavigationMigrationItemTypes.Link:
                         var linkNode = CloneHelper.CloneToLinkMigration(node);
                         migrationResult = await ImportNavigationLinkAsync(linkNode, parentNode);
                         break;
                     case NavigationMigrationItemTypes.Page:
-                        var pageNode = CloneHelper.CloneToPageMigration(node);
-                        //pageNode.AdditionalProperties = node.AdditionalProperties;
-                        //pageNode.ShowInCurrentNavigation = node.ShowInCurrentNavigation;
-                        //pageNode.ParentId = node.ParentId;
-                        //pageNode.Children = node.Children;
-                        //pageNode.ShowInMegaMenu = node.ShowInMegaMenu;
+                        var pageNode = CloneHelper.CloneToPageMigration(node);                       
                         migrationResult = await ImportNavigationPageAsync(pageNode, parentNode);
                         break;
                     default:
@@ -495,22 +460,41 @@ namespace Omnia.Migration.Actions
 
         private CreateNavigationRequest CreateNavigationCreationRequest(LinkNavigationMigrationItem link, INavigationNode parentNode)
         {
-            
-
+             
             var nodeData = new LinkNavigationData
             {
                 Title = new Fx.Models.Language.MultilingualString(),// VariationString(),
                 Type = 8,
                 RendererId = new Guid("2b416031-3750-4328-ae8e-41a0508939b1"),
-                AdditionalProperties = new Dictionary<string, JToken>()
+                AdditionalProperties = new Dictionary<string, JToken>(),
+                HideInCurrentNavigation = false,
+                HideInMegaMenu = false
+               
+             
+                
             };
-            //hieu rem
-            //nodeData.Title.Add(WcmData.DefaultVariation != null ? (int)WcmData.DefaultVariation.Id : 0, link.Title);
-            nodeData.Title.Add(WcmData.DefaultVariation.SupportedLanguages[0].Name, link.Title);
-            nodeData.AdditionalProperties.Add("url", link.Url);
+
+            if (WcmData.DefaultVariation != null)            {
+                var defaultlang = (LanguageTag)Enum.Parse(typeof(LanguageTag), WcmData.DefaultVariation.SupportedLanguages[0].Name.ToString(), true);
+                nodeData.Title.Add(defaultlang, link.Title);
+            }
+            else nodeData.Title.Add(defaultLang, link.Title);
+
+
+            var icon = new IconPickerModel { IconType = null, IconSource = "IAutomaticIcon" };
+
+
+        //hieu rem
+        //nodeData.Title.Add(WcmData.DefaultVariation != null ? (int)WcmData.DefaultVariation.Id : 0, link.Title);
+        // nodeData.Title.Add(WcmData.DefaultVariation.SupportedLanguages[0].Name, link.Title);
+        nodeData.AdditionalProperties.Add("url", link.Url);
             nodeData.AdditionalProperties.Add("openInNewWindow", false);
-            nodeData.AdditionalProperties.Add("hideInCurrentNavigation", false);
-            nodeData.AdditionalProperties.Add("hideInMegaMenu", false);
+            nodeData.AdditionalProperties.Add("urlSegment","");
+            nodeData.AdditionalProperties.Add("icon", JToken.FromObject(icon));
+          
+
+            //nodeData.AdditionalProperties.Add("hideInCurrentNavigation", false);
+            //  nodeData.AdditionalProperties.Add("hideInMegaMenu", false);
 
             return new CreateNavigationRequest
             {
@@ -518,6 +502,8 @@ namespace Omnia.Migration.Actions
                 Position = new NavigationPosition
                 {
                     Parent = parentNode,
+                    After= null,
+                    Before= null
                 },
             };
         }
