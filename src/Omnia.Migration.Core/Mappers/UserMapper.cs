@@ -8,13 +8,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static Omnia.Migration.Core.Mappers.UserMaper;
 
 
 namespace Omnia.Migration.Core.Mappers
 {
     public static class UserMaper
     {
-       
+        public class ShortIdentity
+        {
+            public string id { get; set; }
+           public int type { get; set; }
+        }
+
+
+
+
         // Thoan modified 7.6
         public static Identity GetIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
         {
@@ -38,6 +47,19 @@ namespace Omnia.Migration.Core.Mappers
             }
             return null;
         }
+        public static ShortIdentity GetShortIdentitybyEmail(ItemQueryResult<IResolvedIdentity> Identities, string email)
+        {
+            foreach (ResolvedUserIdentity item in Identities.Items)
+            {
+                if (item.Username.Value.Text.ToLower() == email.ToLower())
+                {
+                    return new ShortIdentity() { id = item.Id.ToString(),type=1};
+                }
+            }
+            return null;
+        }
     }
-
+    
 }
+
+

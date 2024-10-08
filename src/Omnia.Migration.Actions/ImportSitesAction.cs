@@ -92,7 +92,7 @@ namespace Omnia.Migration.Actions
             IdentityApiHttpClient = identityApiHttpClient;
             UserService = userService;
         }
-      
+
         private List<string> Getuserbyemail(Fx.Models.Shared.ApiResponse<ItemQueryResult<IResolvedIdentity>> Identities, string email)
         {
             var result = new List<string>();
@@ -133,10 +133,10 @@ namespace Omnia.Migration.Actions
             //Console.WriteLine("		1. Import Site...");
             //Console.WriteLine("     2. Get Test sites...");
             //string action = Console.ReadLine();
-            //Console.WriteLine("Input default user email");
+            Console.WriteLine("Input default user email");
 
             //3
-            //emaildefault= Console.ReadLine();
+            emaildefault = Console.ReadLine();
 
 
             Console.WriteLine("     1. Full Import...");
@@ -167,17 +167,14 @@ namespace Omnia.Migration.Actions
 
             Console.WriteLine("   Delete app instance with URL NULL? Y/N...    ");
             actionFlag = Console.ReadLine();
-            //Hieu added
-           // var users = await IdentityApiHttpClient.GetUserIdentitybyEmail("");
+            // new Identities for 7.6
             this.Identities = await UserService.LoadUserIdentity();
 
-            
+
             //<<
 
             ProgressManager = progressManager;
             List<SiteMigrationItem> input = await ReadInput();
-            string[] sitesfeature = ReadInputFeatures();
-
 
 
             if (filterOption == "2")
@@ -291,9 +288,9 @@ namespace Omnia.Migration.Actions
         private async ValueTask<List<SiteMigrationItem>> ReadInput()
         {
 
-            var defaul = await IdentityApiHttpClient.GetUserIdentitybyEmail(emaildefault);
+            //   var defaul = await IdentityApiHttpClient.GetUserIdentitybyEmail(emaildefault);
 
-            var currentUser = UserMaper.GetIdentitybyEmail(this.Identities,emaildefault);
+            var currentUser = UserMaper.GetIdentitybyEmail(this.Identities, emaildefault);
 
             //Getuserbyemail
 
@@ -317,27 +314,19 @@ namespace Omnia.Migration.Actions
                 item1.SPTemplate = item.SPTemplate;
                 item1.IsPublic = item.IsPublic;
                 item1.G1SiteTemplateId = item.G1SiteTemplateId;
-
-
-
                 var appIdentities = new AppInstanceIdentities();
                 var listAdmins = new List<Identity>();
-                
                 listAdmins.Add(currentUser);
-
                 if (item.PermissionIdentities.Admin.Count > 0)
                 {
 
                     foreach (var email in item.PermissionIdentities.Admin)
 
                     {
+                        var adminuser = UserMaper.GetIdentitybyEmail(this.Identities, email);
 
-                        var adminuser  = UserMaper.GetIdentitybyEmail(this.Identities, email);
-
-                        
-                           if (adminuser != null)
+                        if (adminuser != null)
                             listAdmins.Add(adminuser);
-                        
                     }
 
                 }
@@ -378,7 +367,7 @@ namespace Omnia.Migration.Actions
                 try
                 {
                     SiteTemplateMapping siteTemplateMapping = SitesService.GetSiteTemplateMapping(siteTemplateMappings, site);
-                    var clientContext = await SPTokenService.CreateAppOnlyClientContextAsync(site.SiteUrl);
+                    //   var clientContext = await SPTokenService.CreateAppOnlyClientContextAsync(site.SiteUrl);
 
                     if (actionFlag != "Y")
                     {
@@ -390,7 +379,7 @@ namespace Omnia.Migration.Actions
                     //Hieu added to check if site had already attached
                     var alreadyAttached = ExistingAppInstances.Where(s => s.DefaultResourceUrl != null && (s.DefaultResourceUrl.Equals(site.SiteUrl) || s.DefaultResourceUrl.Contains(site.SiteUrl))).ToList();
                     var canImportSite = true;
-                    
+
 
 
 
@@ -430,7 +419,7 @@ namespace Omnia.Migration.Actions
                         site.PermissionIdentities.Admin.Add(MigrationSettings.Value.ImportSitesSettings.AppAdminnistrator);
                     }
 
-                    dynamic createSiteProperties = SitesService.GenerateCreateSiteProperties(site);
+                    //  dynamic createSiteProperties = SitesService.GenerateCreateSiteProperties(site);
                     Dictionary<string, object> g2EnterpriseProps = await MapEnterpriseProperties(site, siteTemplateMapping);
                     var keys = g2EnterpriseProps.Keys.ToList();
                     Dictionary<string, JToken> tokenDict = new Dictionary<string, JToken>();
@@ -446,12 +435,9 @@ namespace Omnia.Migration.Actions
                     //<<
                     var appInstanceInfo = new TempAppInstanceInfo
                     {
-                        //Hieu rem
-                        //Title = site.Title,
-                        //Description =  site.Description,
-                        //ShowInPublicListings = site.IsPublic.HasValue ? site.IsPublic.Value : false, 
+
                         ShowInPublicListings = site.IsPublic.HasValue ? ShowInPublicListingsMode.PublicToAppViewer : ShowInPublicListingsMode.None,
-                        // Properties = createSiteProperties,
+
                         FeatureProperties = site.FeatureProperties,
                         EnterpriseProperties = g2EnterpriseProps,
                         PermissionIdentities = site.PermissionIdentities
@@ -467,14 +453,11 @@ namespace Omnia.Migration.Actions
                     appInstanceInfo.Description = appDescription;
 
 
-
-
                     // từ G2 code
 
                     var properties = new TeamWorkAppInstanceProperties()
                     {
                         IsSiteAttached = true,
-
                         Permissions = new Permissions(),
                         SPPath = UrlHelper.GetRelativeUrl(site.SiteUrl),
                         SPAlias = UrlHelper.GetRelativeUrl(site.SiteUrl).Split("/").Last(),
@@ -482,9 +465,10 @@ namespace Omnia.Migration.Actions
                         Members = new List<Identity>(),
                         SiteDesignId = null,
                         OmniaPath = UrlHelper.GetRelativeUrl(site.SiteUrl).Split("/").Last(),
-                       // OmniaRoutePrefix = Workplace.Fx.Constants.TeamWork.AppRoutePrefix,
+                        OmniaRoutePrefix = "_t",
                         Lcid = site.LCID,
-                        TimezoneId = site.TimeZoneId
+                        TimezoneId = site.TimeZoneId,
+
                     };
 
                     var appInstanceInputInfoG2 = new AppInstanceInputInfo
@@ -498,31 +482,6 @@ namespace Omnia.Migration.Actions
                         ShowInPublicListings = ShowInPublicListingsMode.PublicToProfileViewer,
                         PendingRequestUrl = null
                     };
-                    var IappInstanceIdentities = new AppInstanceIdentities
-                    {
-
-                    };
-
-                    var newAppInstancePropertiesStorage = new AppInstancePropertiesStorage
-                    {
-                        OmniaPath = UrlHelper.GetRelativeUrl(site.SiteUrl),
-                        
-                    };
-
-
-
-
-                    var appInstanceInputInfo7X = new AppInstanceInputInfo
-                    {
-                        Title = appTitle,
-                        Description = appDescription,
-                        ShowInPublicListings = ShowInPublicListingsMode.PublicToProfileViewer,
-                        PermissionIdentities = site.PermissionIdentities,
-                        Properties = newAppInstancePropertiesStorage
-                    };
-
-
-
 
 
                     if (MigrationSettings.Value.ImportSitesSettings.UpdateSite)
@@ -541,15 +500,7 @@ namespace Omnia.Migration.Actions
                                 updateAppInstanceResult.EnsureSuccessCode();
                                 ImportSitesReport.Instance.AddSucceedSite(site);
                             }
-                            //else if (actionFlag == "Y")
-                            //{
-                            //	//TODO: Add to report
-                            //	var deleteAppInstanceResult = await AppApiHttpClient.DeleteAppInstanceAsync(appInstanceId: alreadyAttached[0].Id,
-                            //	profileId: siteTemplateMapping.BusinessProfileId);
 
-                            //	deleteAppInstanceResult.EnsureSuccessCode();
-                            //	ImportSitesReport.Instance.AddSucceedSite(site);
-                            //}
                             else
                             {
                                 //TODO: Add to report
@@ -562,8 +513,6 @@ namespace Omnia.Migration.Actions
                         if (canImportSite)
                         {
 
-
-
                             var createAppInstanceResult = await AppApiHttpClient.CreateAppInstanceAsync(
                                    profileId: siteTemplateMapping.BusinessProfileId,
                                    appTemplateId: siteTemplateMapping.G2TemplateId,
@@ -573,7 +522,6 @@ namespace Omnia.Migration.Actions
 
                             createAppInstanceResult.EnsureSuccessCode();
 
-                            //await SitesService.RemoveG1SPFxHeaderAsync(clientContext);
                             ImportSitesReport.Instance.AddSucceedSite(site);
                         }
                     }
@@ -604,18 +552,18 @@ namespace Omnia.Migration.Actions
                     {
                         try
                         {
-                            
+
                             var listuser = new List<object>();
                             //thoan sửa
                             foreach (var item in oldValue)
                             {
-                               
-                                var user = UserMaper.GetIdentitybyEmail(this.Identities,item.ToString());
+
+                                var user = UserMaper.GetShortIdentitybyEmail(this.Identities, item.ToString());
 
                                 if (user != null)
                                 {
 
-                                    listuser.Add( (UserIdentity)(user));
+                                    listuser.Add(user);
 
                                 }
                             }

@@ -11,6 +11,11 @@ using System.IO;
 using System.Threading.Tasks;
 using Dapper;
 using System.Data.SqlClient;
+using Omnia.Fx.Models.Identities;
+using Omnia.Fx.Models.Queries;
+using Omnia.Migration.Core.Http;
+using Omnia.Migration.Core.Mappers;
+using Omnia.Fx.SharePoint.Fields.BuiltIn;
 
 namespace Omnia.Migration.Actions
 {
@@ -18,19 +23,30 @@ namespace Omnia.Migration.Actions
     {
         private LinksService LinksService { get; }
         private IOptionsSnapshot<MigrationSettings> MigrationSettings { get; }
+        private IdentityApiHttpClient IdentityApiHttpClient { get; }
+        public ItemQueryResult<IResolvedIdentity> Identities { get; set; }
+        private UserService UserService { get; }
         public ImportMyLinksAction(
             LinksService linksService,
-            IOptionsSnapshot<MigrationSettings> migrationSettings)
+            IOptionsSnapshot<MigrationSettings> migrationSettings,
+                       IdentityApiHttpClient identityApiHttpClient,
+                         UserService userService)
+ 
         {
             LinksService = linksService;
             MigrationSettings = migrationSettings;
+            IdentityApiHttpClient = identityApiHttpClient;
+            UserService = userService;
         }
         public override async Task StartAsync(IProgressManager progressManager)
         {
             ImportLinksReport.Instance.Init(MigrationSettings.Value);
 
+            this.Identities = await UserService.LoadUserIdentity();
+            var Icreadby = Omnia.Migration.Core.Mappers.UserMaper.GetSystemPropUserIdentitybyEmail(Identities, MigrationSettings.Value.ImportMyLinksSettings.CreatedByUser);
+
             //08082022 - Diem: delete all links created by the "CreatedByUser" in appsetting before importing again.
-            await DeleteOldLinksAsync(MigrationSettings.Value.ImportMyLinksSettings.CreatedByUser);
+            await DeleteOldLinksAsync(Icreadby);
 
             try
             {
@@ -46,6 +62,8 @@ namespace Omnia.Migration.Actions
                         ImportLinksReport.Instance.AddLinkWithoutURL(link.LinkId.ToString());
                         continue;
                     }
+                    var Icreadby1 = Omnia.Migration.Core.Mappers.UserMaper.GetSystemPropUserIdentitybyEmail(Identities,link.UserLoginName);
+                    link.UserLoginName = Icreadby1;
                     await LinksService.AddOrUpdateMyLinkAsync(link);
 
                     progressManager.ReportProgress(1);
