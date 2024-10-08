@@ -28,8 +28,10 @@ namespace Omnia.Migration.Core.Services
 
         public async ValueTask<QuickLink> AddOrUpdateMyLinkAsync(G1MyLink link)
         {
+            
             try
             {
+
                 var g2Link = LinkMapper.MapSharedLink(link, MigrationSettings.Value.WCMContextSettings, MigrationSettings.Value.ImportMyLinksSettings.IconColor, MigrationSettings.Value.ImportMyLinksSettings.BackgroundColor);
                 var addLinkResult = await MyLinkApiHttpClient.AddOrUpdateMyLinkAsync(g2Link);
                 addLinkResult.EnsureSuccessCode();

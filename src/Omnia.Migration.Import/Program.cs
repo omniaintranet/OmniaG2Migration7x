@@ -77,11 +77,11 @@ namespace Omnia.Migration.App
                         break;
                     case MigrationActions.ImportTeamSites:
                         Console.WriteLine("Starting import sites task");
-                        //ExecuteMigrationAction<ImportSitesAction>("Importing sites", "Importing sites");
+                        ExecuteMigrationAction<ImportSitesAction>("Importing sites", "Importing sites");
                         break;
                     case MigrationActions.ExportTeamSites:
                         Console.WriteLine("Starting export sites task");
-                        //ExecuteMigrationAction<ExportSitesAction>("Exporting sites", "Exporting sites");
+                        ExecuteMigrationAction<ExportSitesAction>("Exporting sites", "Exporting sites");
                         break;
                     case MigrationActions.GeneratePagesSummaryReport:
                         Console.WriteLine("Starting generate pages summary task");

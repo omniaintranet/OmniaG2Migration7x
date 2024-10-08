@@ -124,7 +124,7 @@ namespace Omnia.Migration.Core.Services
 			createSiteProperties.appType = SPHelper.GetAppTypeId(site.SPTemplate); // TODO: is there other type? yes 6 types in total
 			createSiteProperties.location = "/sites";
 			createSiteProperties.owner = site.PermissionIdentities.Admin[0];
-			createSiteProperties.appAdministrators = JToken.FromObject(new string[] { site.PermissionIdentities.Admin[0] });
+			//createSiteProperties.appAdministrators = JToken.FromObject(new string[] { site.PermissionIdentities.Admin[0] });
 			return createSiteProperties;
 		}
 

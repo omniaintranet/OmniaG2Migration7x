@@ -82,14 +82,17 @@ namespace Omnia.Migration.App
                 .AddTransient<ImportSharedLinksAction>()
                 .AddTransient<GeneratePagesSummaryAction>()
                 //Hieu rem
-                //.AddTransient<ImportSitesAction>()      
-                //.AddTransient<ExportSitesAction>()
+                .AddTransient<ImportSitesAction>()      
+                .AddTransient<ExportSitesAction>()
                 .AddTransient<QueryPageAction>()
                 .AddTransient<ImportMyLinksAction>()
                 .AddTransient<QueryAppWithFeatureFailureAction>()
                 .AddTransient<ExportChildUnderCustomLink>()
                 .AddTransient<AppInstanceFeatureAction>()
-                .AddTransient<SiteAppPermissionUpdate>();
+                .AddTransient<AppInstanceFeatureAction>()
+                .AddTransient<FeatureApiHttpClient>();
+
+
 
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }
