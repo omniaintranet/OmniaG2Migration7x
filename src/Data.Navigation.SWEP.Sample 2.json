@@ -1,0 +1,917 @@
+{
+    "PageData": {
+        "Type": 3,
+        "PageRendererId": "8e012b42-4c13-4150-a11f-6b0b6300ee7c",
+        "Title": "start",
+        "Layout": null,
+        "EnterpriseProperties": {
+            "pagesummary": null,
+            "pagecontent": "<div id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" class=\"ms-rtestate-field\" style=\"display&#58;inline;\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\"><div id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" class=\"ms-rtestate-field\" style=\"display&#58;inline;\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\"><div id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" class=\"ms-rtestate-field\" style=\"display&#58;inline;\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\"><div id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" class=\"ms-rtestate-field\" style=\"display&#58;inline;\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"><div class=\"ms-rtestate-field\" id=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00__ControlWrapper_RichHtmlField\" aria-labelledby=\"ctl00_ctl66_g_fe1d5718_88e1_41a3_b890_8e45f9923420_ctl00_ctl02_ctl00_ctl02_ctl00_ctl00_ctl11_ctl00_ctl00_ctl05_ctl00_label\" style=\"display&#58;inline;\"></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>",
+            "pageimage": null,
+            "createdby": "sofia.linden@swep.net",
+            "createdat": "2016-12-01T15:37:20+00:00",
+            "modifiedby": "christina.windisch@swep.net",
+            "modifiedat": "2024-09-09T08:38:15+00:00"
+        }
+    },
+    "TranslationPages": [],
+    "UrlSegment": "start",
+    "TargetUrl": "/sites/SWEP/Pages/start.aspx",
+    "GlueLayoutId": "61630a85-63e4-42b2-ad25-dc08b07e261f",
+    "RelatedLinks": [],
+    "ListId": "e31d5319-8689-4ed4-8157-56b8b5f77720",
+    "Comments": [],
+    "Likes": [],
+    "PageLanguage": "en-us",
+    "BlockSettings": [
+        {
+            "ControlId": "33FE3377-E631-42DF-B2E4-9162EEEB0FCA",
+            "InstanceId": "a43315a8-46de-4a47-9a28-e4fd988eb842",
+            "Scope": "controlinstance",
+            "Settings": {
+                "Categories": [
+                    {
+                        "title": "News",
+                        "iconColor": "#000000",
+                        "viewControls": [
+                            {
+                                "controlId": "FB58CF64-F53E-4A45-A489-DF747555834B",
+                                "title": "Management News",
+                                "id": "43385be1-2733-4132-91a0-e4ad2e44b78a",
+                                "inEditMode": false,
+                                "draftTitle": "Management News"
+                            },
+                            {
+                                "controlId": "FB58CF64-F53E-4A45-A489-DF747555834B",
+                                "title": "Article Viewer",
+                                "id": "4b7cf7c1-a43b-45d0-a5e6-69b22f336c9c",
+                                "inEditMode": false,
+                                "draftTitle": "Article Viewer"
+                            },
+                            {
+                                "controlId": "82850DC5-971D-44DB-B058-BF8FD5D84FFD",
+                                "title": "Script/Html",
+                                "id": "811eefc4-0908-42df-8952-55f9c2841315",
+                                "inEditMode": false,
+                                "draftTitle": "Script/Html"
+                            }
+                        ],
+                        "notificationType": 1,
+                        "id": "f6f55855-d873-43fa-9f6e-8d9807f39644",
+                        "icon": "fa-newspaper-o"
+                    },
+                    {
+                        "title": "Calendar",
+                        "iconColor": "#000000",
+                        "viewControls": [
+                            {
+                                "controlId": "EB98A3A7-50AD-46A7-8957-32C2715B5AC8",
+                                "title": "Aggregated Calendar",
+                                "id": "798e24a9-2908-4b44-88d4-0309d7dc45ce",
+                                "inEditMode": false,
+                                "draftTitle": "Aggregated Calendar"
+                            }
+                        ],
+                        "notificationType": 1,
+                        "id": "0e44c358-189d-4bbb-b96c-31c9ee9f7782",
+                        "icon": "fa-calendar"
+                    },
+                    {
+                        "title": "Documents",
+                        "iconColor": "#000000",
+                        "viewControls": [
+                            {
+                                "controlId": "82E5D5A0-32B5-4783-9CEC-8964018C7198",
+                                "title": "Last Updated Documents",
+                                "id": "a4befa15-4f81-44cb-b8ed-6bb22b7e715a",
+                                "inEditMode": false,
+                                "draftTitle": "Last Updated Documents"
+                            }
+                        ],
+                        "notificationType": 1,
+                        "id": "0b9c888a-a07c-433d-bf39-1c805f7cc6c8",
+                        "icon": "fa-file-text-o"
+                    },
+                    {
+                        "title": "Important announcements",
+                        "iconColor": "#000000",
+                        "viewControls": [
+                            {
+                                "controlId": "5886AFED-4834-4A08-B358-2E5881D2BB25",
+                                "title": "Important Announcements",
+                                "id": "bddf80d5-cbf8-4ea6-8d48-7a8a6bffe5e6",
+                                "inEditMode": false,
+                                "draftTitle": "Important Announcements"
+                            }
+                        ],
+                        "notificationType": 1,
+                        "id": "f232bc78-e1b7-4347-8606-f9ac83995d71",
+                        "icon": "fa-exclamation"
+                    }
+                ],
+                "backgroundColor": "#ebebeb",
+                "activeBackgroundColor": "#fff",
+                "iconColor": "#000",
+                "activeIconColor": "#000",
+                "notificationCountColor": "#a80014",
+                "borderColor": "#ebebeb",
+                "layoutFormat": "omf-notification-panel-responsive",
+                "webpartZoneHolderId": "omf-NP-content-id"
+            },
+            "ZoneId": "zone1",
+            "ZoneIndex": 0,
+            "IsStatic": false,
+            "SettingsKey": null
+        },
+        {
+            "ControlId": "FB58CF64-F53E-4A45-A489-DF747555834B",
+            "InstanceId": "9691feba-23e2-4048-9f7d-31d220bb3405",
+            "Scope": "controlinstance",
+            "Settings": {
+                "query": {
+                    "newsCenterQuery": [
+                        {
+                            "newsCenterUrl": "https://dover.sharepoint.com/sites/swep/news",
+                            "filters": [],
+                            "useTargetingSettings": false,
+                            "selectedFilterFields": {},
+                            "isLoadingFields": false,
+                            "newsCenterTitle": "SWEP > News",
+                            "siteTitle": "News",
+                            "siteCollectionUrl": "https://dover.sharepoint.com/sites/SWEP",
+                            "availableFields": [
+                                {
+                                    "displayName": "Hide physical URLs from search",
+                                    "internalName": "PublishingIsFurlPage",
+                                    "typeAsString": "Boolean",
+                                    "additionalInfo": {},
+                                    "isSelected": false,
+                                    "isShowInEditMode": false,
+                                    "isShowInViewMode": false,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": null,
+                                    "canEditField": false,
+                                    "displayType": 0,
+                                    "isTargetingField": false,
+                                    "displayFormat": null,
+                                    "isFieldAllowMultiple": false
+                                },
+                                {
+                                    "displayName": "Hide from Internet Search Engines",
+                                    "internalName": "RobotsNoIndex",
+                                    "typeAsString": "Boolean",
+                                    "additionalInfo": {},
+                                    "isSelected": false,
+                                    "isShowInEditMode": false,
+                                    "isShowInViewMode": false,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": null,
+                                    "canEditField": false,
+                                    "displayType": 0,
+                                    "isTargetingField": false,
+                                    "displayFormat": null,
+                                    "isFieldAllowMultiple": false
+                                },
+                                {
+                                    "displayName": "Enterprise Keywords",
+                                    "internalName": "TaxKeyword",
+                                    "typeAsString": "TaxonomyFieldTypeMulti",
+                                    "additionalInfo": {
+                                        "termSetId": "5d3920c4-1a84-403a-85cc-ed6f1c3a87f2",
+                                        "allowMultipleValues": "True",
+                                        "createValuesInEditForm": "False",
+                                        "open": "True"
+                                    },
+                                    "isSelected": false,
+                                    "isShowInEditMode": false,
+                                    "isShowInViewMode": false,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": null,
+                                    "canEditField": false,
+                                    "displayType": 0,
+                                    "isTargetingField": false,
+                                    "displayFormat": null,
+                                    "isFieldAllowMultiple": true
+                                }
+                            ],
+                            "availableViewFields": [
+                                {
+                                    "displayName": "Contact",
+                                    "internalName": "PublishingContact",
+                                    "typeAsString": "User",
+                                    "additionalInfo": {
+                                        "allowMultipleValues": "False"
+                                    },
+                                    "isSelected": true,
+                                    "isShowInEditMode": true,
+                                    "isShowInViewMode": true,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": [],
+                                    "canEditField": false,
+                                    "displayType": 5,
+                                    "isTargetingField": false,
+                                    "displayFormat": null
+                                },
+                                {
+                                    "displayName": "Article Date",
+                                    "internalName": "ArticleStartDate",
+                                    "typeAsString": "DateTime",
+                                    "additionalInfo": {},
+                                    "isSelected": true,
+                                    "isShowInEditMode": true,
+                                    "isShowInViewMode": true,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": true,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": [],
+                                    "canEditField": false,
+                                    "displayType": 1,
+                                    "isTargetingField": false,
+                                    "displayFormat": "DateOnly"
+                                },
+                                {
+                                    "displayName": "Enterprise Keywords",
+                                    "internalName": "TaxKeyword",
+                                    "typeAsString": "TaxonomyFieldTypeMulti",
+                                    "additionalInfo": {
+                                        "termSetId": "5d3920c4-1a84-403a-85cc-ed6f1c3a87f2",
+                                        "allowMultipleValues": "True",
+                                        "createValuesInEditForm": "False",
+                                        "open": "True"
+                                    },
+                                    "isSelected": true,
+                                    "isShowInEditMode": true,
+                                    "isShowInViewMode": true,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": [],
+                                    "canEditField": false,
+                                    "displayType": 2,
+                                    "isTargetingField": false,
+                                    "displayFormat": null
+                                }
+                            ]
+                        }
+                    ],
+                    "periodType": 4,
+                    "periodField": null,
+                    "itemLimit": 7,
+                    "orderByFields": [
+                        {
+                            "fieldName": "ArticleStartDate",
+                            "ascending": false,
+                            "editable": true
+                        },
+                        {
+                            "fieldName": "Modified",
+                            "ascending": false,
+                            "editable": false
+                        }
+                    ],
+                    "translatedNews": 1,
+                    "pageLocale": "en-US",
+                    "viewFields": null,
+                    "skipId": 0,
+                    "textSearch": null,
+                    "isShowMyDraft": false,
+                    "priority": 1
+                },
+                "priority": 1,
+                "opacity": 0.8,
+                "goToNewsCenterLabel": "Read more News here",
+                "isDisplayNewsCenterLink": true,
+                "openPageAsDialog": false,
+                "isShowNoResultMessage": false,
+                "activeColor": "#a80014",
+                "accentColor": "#a80014",
+                "view": "omi-newsviewer-simplelisting-view",
+                "rollerViewSettings": {
+                    "transition": "slide",
+                    "interval": 6000,
+                    "maxLaps": 0,
+                    "title": {
+                        "fontSize": 21,
+                        "mobileFontSize": 13
+                    },
+                    "summary": {
+                        "fontSize": 13,
+                        "mobileFontSize": 12
+                    }
+                },
+                "rollerView2Settings": {
+                    "opacity": 0.8,
+                    "transition": "slide",
+                    "interval": 6000,
+                    "maxLaps": 0,
+                    "title": {
+                        "fontSize": 26,
+                        "mobileFontSize": 26
+                    },
+                    "summary": null
+                },
+                "imageListingSettings": {
+                    "title": {
+                        "fontSize": 18,
+                        "mobileFontSize": 18
+                    },
+                    "summary": {
+                        "fontSize": 13,
+                        "mobileFontSize": 13
+                    }
+                },
+                "imageListing2Settings": {
+                    "title": {
+                        "fontSize": 20,
+                        "mobileFontSize": 20
+                    },
+                    "summary": {
+                        "fontSize": 14,
+                        "mobileFontSize": 14
+                    }
+                },
+                "titleSettings": {
+                    "isShowTitle": false,
+                    "titleLocalization": "",
+                    "customTitle": ""
+                }
+            },
+            "ZoneId": "zone2",
+            "ZoneIndex": 0,
+            "IsStatic": false,
+            "SettingsKey": null
+        },
+        {
+            "ControlId": "FB58CF64-F53E-4A45-A489-DF747555834B",
+            "InstanceId": "775f3e51-b571-46cd-82aa-0d5247c81af6",
+            "Scope": "controlinstance",
+            "Settings": {
+                "query": {
+                    "newsCenterQuery": [
+                        {
+                            "newsCenterUrl": "https://dover.sharepoint.com/sites/SWEP/hr-announcements",
+                            "filters": [],
+                            "useTargetingSettings": false,
+                            "selectedFilterFields": {},
+                            "isLoadingFields": false,
+                            "newsCenterTitle": "SWEP > HR Announcements",
+                            "siteTitle": "HR Announcements",
+                            "siteCollectionUrl": "https://dover.sharepoint.com/sites/SWEP",
+                            "availableFields": [
+                                {
+                                    "displayName": "Hide physical URLs from search",
+                                    "internalName": "PublishingIsFurlPage",
+                                    "typeAsString": "Boolean",
+                                    "additionalInfo": {},
+                                    "isSelected": false,
+                                    "isShowInEditMode": false,
+                                    "isShowInViewMode": false,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": null,
+                                    "canEditField": false,
+                                    "displayType": 0,
+                                    "isTargetingField": false,
+                                    "displayFormat": null,
+                                    "isFieldAllowMultiple": false
+                                },
+                                {
+                                    "displayName": "Hide from Internet Search Engines",
+                                    "internalName": "RobotsNoIndex",
+                                    "typeAsString": "Boolean",
+                                    "additionalInfo": {},
+                                    "isSelected": false,
+                                    "isShowInEditMode": false,
+                                    "isShowInViewMode": false,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": null,
+                                    "canEditField": false,
+                                    "displayType": 0,
+                                    "isTargetingField": false,
+                                    "displayFormat": null,
+                                    "isFieldAllowMultiple": false
+                                },
+                                {
+                                    "displayName": "Enterprise Keywords",
+                                    "internalName": "TaxKeyword",
+                                    "typeAsString": "TaxonomyFieldTypeMulti",
+                                    "additionalInfo": {
+                                        "termSetId": "5d3920c4-1a84-403a-85cc-ed6f1c3a87f2",
+                                        "allowMultipleValues": "True",
+                                        "createValuesInEditForm": "False",
+                                        "open": "True"
+                                    },
+                                    "isSelected": false,
+                                    "isShowInEditMode": false,
+                                    "isShowInViewMode": false,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": null,
+                                    "canEditField": false,
+                                    "displayType": 0,
+                                    "isTargetingField": false,
+                                    "displayFormat": null,
+                                    "isFieldAllowMultiple": true
+                                },
+                                {
+                                    "displayName": "Top Announcement",
+                                    "internalName": "Top_x0020_Announcement",
+                                    "typeAsString": "Boolean",
+                                    "additionalInfo": {},
+                                    "isSelected": false,
+                                    "isShowInEditMode": false,
+                                    "isShowInViewMode": false,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": null,
+                                    "canEditField": false,
+                                    "displayType": 0,
+                                    "isTargetingField": false,
+                                    "displayFormat": null,
+                                    "isFieldAllowMultiple": false
+                                }
+                            ],
+                            "availableViewFields": [
+                                {
+                                    "displayName": "Contact",
+                                    "internalName": "PublishingContact",
+                                    "typeAsString": "User",
+                                    "additionalInfo": {
+                                        "allowMultipleValues": "False"
+                                    },
+                                    "isSelected": true,
+                                    "isShowInEditMode": true,
+                                    "isShowInViewMode": true,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": [],
+                                    "canEditField": false,
+                                    "displayType": 5,
+                                    "isTargetingField": false,
+                                    "displayFormat": null
+                                },
+                                {
+                                    "displayName": "Article Date",
+                                    "internalName": "ArticleStartDate",
+                                    "typeAsString": "DateTime",
+                                    "additionalInfo": {},
+                                    "isSelected": true,
+                                    "isShowInEditMode": true,
+                                    "isShowInViewMode": true,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": true,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": [],
+                                    "canEditField": false,
+                                    "displayType": 1,
+                                    "isTargetingField": false,
+                                    "displayFormat": "DateOnly"
+                                },
+                                {
+                                    "displayName": "Enterprise Keywords",
+                                    "internalName": "TaxKeyword",
+                                    "typeAsString": "TaxonomyFieldTypeMulti",
+                                    "additionalInfo": {
+                                        "termSetId": "5d3920c4-1a84-403a-85cc-ed6f1c3a87f2",
+                                        "allowMultipleValues": "True",
+                                        "createValuesInEditForm": "False",
+                                        "open": "True"
+                                    },
+                                    "isSelected": true,
+                                    "isShowInEditMode": true,
+                                    "isShowInViewMode": true,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": [],
+                                    "canEditField": false,
+                                    "displayType": 2,
+                                    "isTargetingField": false,
+                                    "displayFormat": null
+                                },
+                                {
+                                    "displayName": "Comments",
+                                    "internalName": "Comments",
+                                    "typeAsString": "Note",
+                                    "additionalInfo": {},
+                                    "isSelected": true,
+                                    "isShowInEditMode": true,
+                                    "isShowInViewMode": true,
+                                    "isShowInShowMore": false,
+                                    "isShared": false,
+                                    "isShowLabel": false,
+                                    "readOnlyField": false,
+                                    "required": false,
+                                    "groupPermission": [],
+                                    "canEditField": false,
+                                    "displayType": 1,
+                                    "isTargetingField": false,
+                                    "displayFormat": null
+                                }
+                            ]
+                        }
+                    ],
+                    "periodType": 2,
+                    "itemLimit": 5,
+                    "orderByFields": [
+                        {
+                            "fieldName": "ArticleStartDate",
+                            "ascending": false,
+                            "editable": true
+                        },
+                        {
+                            "fieldName": "Modified",
+                            "ascending": false,
+                            "editable": false
+                        }
+                    ],
+                    "priority": 1,
+                    "translatedNews": 1,
+                    "pageLocale": "en-US"
+                },
+                "priority": 1,
+                "opacity": 0.8,
+                "goToNewsCenterLabel": "Read all HR Announcements",
+                "isDisplayNewsCenterLink": false,
+                "openPageAsDialog": false,
+                "isShowNoResultMessage": false,
+                "activeColor": "#a80014",
+                "accentColor": "#a80014",
+                "view": "omi-newsviewer-simplelisting-view",
+                "rollerViewSettings": {
+                    "transition": "slide",
+                    "interval": 6000,
+                    "maxLaps": 0,
+                    "title": {
+                        "fontSize": 21,
+                        "mobileFontSize": 13
+                    },
+                    "summary": {
+                        "fontSize": 13,
+                        "mobileFontSize": 12
+                    }
+                },
+                "rollerView2Settings": {
+                    "opacity": 0.8,
+                    "transition": "slide",
+                    "interval": 6000,
+                    "maxLaps": 0,
+                    "title": {
+                        "fontSize": 26,
+                        "mobileFontSize": 26
+                    },
+                    "summary": null
+                },
+                "imageListingSettings": {
+                    "title": {
+                        "fontSize": 18,
+                        "mobileFontSize": 18
+                    },
+                    "summary": {
+                        "fontSize": 13,
+                        "mobileFontSize": 13
+                    }
+                },
+                "imageListing2Settings": {
+                    "title": {
+                        "fontSize": 20,
+                        "mobileFontSize": 20
+                    },
+                    "summary": {
+                        "fontSize": 14,
+                        "mobileFontSize": 14
+                    }
+                },
+                "titleSettings": {
+                    "isShowTitle": false,
+                    "titleLocalization": "",
+                    "customTitle": ""
+                }
+            },
+            "ZoneId": "zone2",
+            "ZoneIndex": 1,
+            "IsStatic": false,
+            "SettingsKey": null
+        },
+        {
+            "ControlId": "82850DC5-971D-44DB-B058-BF8FD5D84FFD",
+            "InstanceId": "274e1817-4a9a-418a-8e5e-1410e214a0ff",
+            "Scope": "controlinstance",
+            "Settings": {
+                "settings": null,
+                "data": {
+                    "title": "",
+                    "blockTitle": "",
+                    "html": "<p\n  class=\"newsviewer-newscenterlink\"\n  style=\"background-color:#555;margin:-10px 0px 0px 0px;padding:10px;\"\n>\n  <a\n    style=\"color:#fff;margin:0px 0px 0px 69px;\"\n    href=\"https://dover.sharepoint.com/sites/SWEP#/hr-announcements/pages/newsstartpage.aspx\"\n    >People Announcements</a\n  >\n  <a\n    style=\"float:right;color:#fff;\"\n    href=\"https://dover.sharepoint.com/sites/SWEP/hr-announcements/_layouts/15/subnew.aspx?List=%7BED761665-2795-406E-B272-6572932E8D9F%7D&amp;Source=https://dover.sharepoint.com/sites/SWEP/\"\n    title=\"Alert me\"\n  >\n    <i class=\"fa fa-bell-o\" style=\"float:right;color:#fff;\"></i>\n  </a>\n</p>\n",
+                    "js": "",
+                    "css": "",
+                    "hiddenBlock": false,
+                    "runInIframe": false,
+                    "runScriptInEditMode": false
+                }
+            },
+            "ZoneId": "zone2",
+            "ZoneIndex": 2,
+            "IsStatic": false,
+            "SettingsKey": "controlinstance:274e1817-4a9a-418a-8e5e-1410e214a0ff"
+        },
+        {
+            "ControlId": "6F4F4334-1052-4AB4-A823-A3072951DB85",
+            "InstanceId": "af6de2a9-2d09-4e22-863f-a046d6892dc9",
+            "Scope": "controlinstance",
+            "Settings": {
+                "title": "",
+                "titleSettings": {
+                    "isShowTitle": true,
+                    "titleLocalization": "",
+                    "customTitle": ""
+                },
+                "customTitle": null,
+                "imageUrl": "https://dover.sharepoint.com/sites/SWEP/PublishingImages/Start/Quick%20Links/Survey_banner2024.png",
+                "content": "",
+                "linkUrl": "",
+                "footer": "",
+                "titleColor": "",
+                "contentColor": "",
+                "footerColor": "#fff",
+                "backgroundColor": "",
+                "viewId": "2b75c10b-bc52-4b44-88ec-9550474c8e7c",
+                "bannerType": "0",
+                "isOpenLinkNewWindow": true,
+                "targeting": {
+                    "HasTargeting": false,
+                    "TargetingDefinitionId": null
+                },
+                "opacity": 0.4,
+                "templateName": null,
+                "groupName": null
+            },
+            "ZoneId": "zone4",
+            "ZoneIndex": 0,
+            "IsStatic": false,
+            "SettingsKey": "controlinstance:af6de2a9-2d09-4e22-863f-a046d6892dc9"
+        },
+        {
+            "ControlId": "6F4F4334-1052-4AB4-A823-A3072951DB85",
+            "InstanceId": "a07ca9f7-839f-4124-9591-96538a4e93b1",
+            "Scope": "controlinstance",
+            "Settings": {
+                "title": "",
+                "titleSettings": {
+                    "isShowTitle": false,
+                    "titleLocalization": "",
+                    "customTitle": ""
+                },
+                "customTitle": null,
+                "imageUrl": "https://dover.sharepoint.com/sites/SWEP/PublishingImages/Start/Quick%20Links/Puff_ITsupport.png",
+                "content": "",
+                "linkUrl": "https://dover.sharepoint.com/sites/enduseritsupport",
+                "footer": "",
+                "titleColor": "",
+                "contentColor": "",
+                "footerColor": "#fff",
+                "backgroundColor": "",
+                "viewId": "2b75c10b-bc52-4b44-88ec-9550474c8e7c",
+                "bannerType": "0",
+                "isOpenLinkNewWindow": false,
+                "targeting": {
+                    "HasTargeting": false,
+                    "TargetingDefinitionId": null
+                },
+                "opacity": 0.4,
+                "templateName": null,
+                "groupName": null
+            },
+            "ZoneId": "zone4",
+            "ZoneIndex": 1,
+            "IsStatic": false,
+            "SettingsKey": null
+        },
+        {
+            "ControlId": "6F4F4334-1052-4AB4-A823-A3072951DB85",
+            "InstanceId": "4256f43b-122a-4b87-9920-1b420138cd96",
+            "Scope": "controlinstance",
+            "Settings": {
+                "title": "",
+                "titleSettings": {
+                    "isShowTitle": false,
+                    "titleLocalization": "",
+                    "customTitle": ""
+                },
+                "customTitle": null,
+                "imageUrl": "https://dover.sharepoint.com/sites/SWEP/PublishingImages/Start/Quick%20Links/Office365_learningportal.png",
+                "content": "",
+                "linkUrl": "https://dover.sharepoint.com/sites/M365-Collaboration-Site/LearningPortal/SitePages/Products.aspx",
+                "footer": "",
+                "titleColor": "",
+                "contentColor": "",
+                "footerColor": "#fff",
+                "backgroundColor": "",
+                "viewId": "2b75c10b-bc52-4b44-88ec-9550474c8e7c",
+                "bannerType": "0",
+                "isOpenLinkNewWindow": true,
+                "targeting": {
+                    "HasTargeting": false,
+                    "TargetingDefinitionId": null
+                },
+                "opacity": 0.4,
+                "templateName": null,
+                "groupName": null
+            },
+            "ZoneId": "zone5",
+            "ZoneIndex": 0,
+            "IsStatic": false,
+            "SettingsKey": "controlinstance:4256f43b-122a-4b87-9920-1b420138cd96"
+        },
+        {
+            "ControlId": "6F4F4334-1052-4AB4-A823-A3072951DB85",
+            "InstanceId": "1edd2249-64d0-4d22-99ce-06188c5ad51e",
+            "Scope": "controlinstance",
+            "Settings": {
+                "title": "",
+                "titleSettings": {
+                    "isShowTitle": false,
+                    "titleLocalization": "",
+                    "customTitle": ""
+                },
+                "customTitle": null,
+                "imageUrl": "https://dover.sharepoint.com/sites/SWEP/PublishingImages/Start/Quick%20Links/Puff_HRC.png",
+                "content": "",
+                "linkUrl": "https://performancemanager.successfactors.eu/sf/login?company=DOVER&loginMethod=SSO ",
+                "footer": "",
+                "titleColor": "",
+                "contentColor": "",
+                "footerColor": "#fff",
+                "backgroundColor": "",
+                "viewId": "2b75c10b-bc52-4b44-88ec-9550474c8e7c",
+                "bannerType": "0",
+                "isOpenLinkNewWindow": true,
+                "targeting": {
+                    "HasTargeting": false,
+                    "TargetingDefinitionId": null
+                },
+                "opacity": 0.4,
+                "templateName": null,
+                "groupName": null
+            },
+            "ZoneId": "zone5",
+            "ZoneIndex": 1,
+            "IsStatic": false,
+            "SettingsKey": null
+        }
+    ],
+    "PhysicalPageUniqueId": "7b862215-6aa0-4315-93ce-8058fd53643c",
+    "Id": 3,
+    "ParentId": null,
+    "Children": [
+        {
+            "PageData": {
+                "Type": 1,
+                "PageRendererId": "8e012b42-4c13-4150-a11f-6b0b6300ee7c",
+                "Title": "My Employment",
+                "Layout": null,
+                "EnterpriseProperties": {
+                    "Comments": "We have compiled important information for you as an employee or a manager on the \"My Employment\" pages. ",
+                    "pagesummary": "We have compiled important information for you as an employee or a manager on the \"My Employment\" pages. ",
+                    "pagecontent": "<p>On these pages you can find documents, guidelines and overall information about your employment at SWEP. </p><p>Locate your specific country information in the menu bar to the left.<br></p>",
+                    "pageimage": "<img alt=\"\" src=\"/sites/SWEP/PublishingImages/Archive/people.jpg?RenditionID=1001\" style=\"BORDER: px solid; \">",
+                    "createdby": "Ola.Oredsson@swep.net",
+                    "createdat": "2016-12-20T20:42:53+00:00",
+                    "modifiedby": "christina.windisch@swep.net",
+                    "modifiedat": "2024-01-16T13:14:27+00:00"
+                }
+            },
+            "TranslationPages": [],
+            "UrlSegment": "my-employment",
+            "TargetUrl": "/sites/SWEP/Pages/my-employment.aspx",
+            "GlueLayoutId": null,
+            "RelatedLinks": [],
+            "ListId": "e31d5319-8689-4ed4-8157-56b8b5f77720",
+            "Comments": [],
+            "Likes": [],
+            "PageLanguage": "en-us",
+            "BlockSettings": [],
+            "PhysicalPageUniqueId": "1495f942-2aaa-4a4d-b434-65641a6efb1d",
+            "Id": 6,
+            "ParentId": null,
+            "Children": [
+                {
+                    "PageData": {
+                        "Type": 1,
+                        "PageRendererId": "8e012b42-4c13-4150-a11f-6b0b6300ee7c",
+                        "Title": "Employee Handbook",
+                        "Layout": null,
+                        "EnterpriseProperties": {
+                            "pagesummary": "The Employee Handbook contains information about your employment at SWEP.",
+                            "pagecontent": "<p>The Employee Handbook is for you&#160;as a SWEP&#160;employee.&#160;Here you will find information that is associated to your employment and you can read about different rules and guidelines. Owner of the content is HR at each location.&#160;<br></p><p>If you have any questions, please reach out to your HR representative.</p>",
+                            "pageimage": "<img alt=\"\" src=\"/sites/SWEP/PublishingImages/My%20Employment/Employee%20Handbook/books3.jpg?RenditionID=1001\" style=\"BORDER: px solid; \">",
+                            "createdby": "eva.gillborg@swep.net",
+                            "createdat": "2017-01-11T10:37:49+00:00",
+                            "modifiedby": "eva.gillborg@swep.net",
+                            "modifiedat": "2018-01-29T14:46:17+00:00"
+                        }
+                    },
+                    "TranslationPages": [],
+                    "UrlSegment": "employee-handbook",
+                    "TargetUrl": "/sites/SWEP/publishing-employee-handbook/Pages/employee-handbook-2.aspx",
+                    "GlueLayoutId": null,
+                    "RelatedLinks": [],
+                    "ListId": "cdbea2e3-cbb8-48da-ba4f-f7c27a68de89",
+                    "Comments": [],
+                    "Likes": [],
+                    "PageLanguage": "en-us",
+                    "BlockSettings": [],
+                    "PhysicalPageUniqueId": "f5f9d042-8da4-4579-ae52-f3414f2046fb",
+                    "Id": 2,
+                    "ParentId": null,
+                    "Children": [
+                        {
+                            "PageData": {
+                                "Type": 1,
+                                "PageRendererId": "8e012b42-4c13-4150-a11f-6b0b6300ee7c",
+                                "Title": "Finland",
+                                "Layout": null,
+                                "EnterpriseProperties": {
+                                    "Comments": "This is the Employee Handbook for employees working in Finland.",
+                                    "pagesummary": "This is the Employee Handbook for employees working in Finland.",
+                                    "pagecontent": null,
+                                    "pageimage": "<img alt=\"\" src=\"/sites/SWEP/PublishingImages/My%20Employment/Employee%20Handbook/books3.jpg\" style=\"BORDER: px solid; \">",
+                                    "createdby": "linnea.ronn@swep.net",
+                                    "createdat": "2018-04-25T09:28:49+00:00",
+                                    "modifiedby": "christina.windisch@swep.net",
+                                    "modifiedat": "2024-02-15T07:03:58+00:00"
+                                }
+                            },
+                            "TranslationPages": [],
+                            "UrlSegment": "finland",
+                            "TargetUrl": "/sites/SWEP/publishing-employee-handbook/Pages/finland.aspx",
+                            "GlueLayoutId": "b8cc18d8-1689-4ead-a934-f994619bf8be",
+                            "RelatedLinks": [],
+                            "ListId": "cdbea2e3-cbb8-48da-ba4f-f7c27a68de89",
+                            "Comments": [],
+                            "Likes": [],
+                            "PageLanguage": "en-us",
+                            "BlockSettings": [],
+                            "PhysicalPageUniqueId": "4ac8987e-a481-4a71-9dcb-540790aae16e",
+                            "Id": 327,
+                            "ParentId": null,
+                            "Children": [],
+                            "ShowInMegaMenu": false,
+                            "ShowInCurrentNavigation": false,
+                            "MigrationItemType": 1
+                        }
+                    ],
+                    "ShowInMegaMenu": true,
+                    "ShowInCurrentNavigation": true,
+                    "MigrationItemType": 1
+                }
+            ],
+            "ShowInMegaMenu": true,
+            "ShowInCurrentNavigation": true,
+            "MigrationItemType": 1
+        }
+    ],
+    "ShowInMegaMenu": true,
+    "ShowInCurrentNavigation": true,
+    "MigrationItemType": 1
+}
