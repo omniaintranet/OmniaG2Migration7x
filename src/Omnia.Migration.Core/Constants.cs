@@ -111,6 +111,20 @@ namespace Omnia.Migration.Core
             public static readonly string RelatedLinks2 = "owcmrelatedlinks";
 
             public static readonly string PeoplePreferredName = "panpreferredname";
+
+            // Events
+            public static readonly string EventStartDate = "omemstartdate";
+            public static readonly string EventEndDate = "omemenddate";
+            public static readonly string EventMaxParticipants = "omemmaximumparticipants";
+            public static readonly string EventRegistrationStartDate = "omemregistrationstartdate";
+            public static readonly string EventRegistrationEndDate = "omemregistrationenddate";
+            public static readonly string EventCancellationEndDate = "omemcancellationenddate";
+            public static readonly string EventIsOnlineMeeting = "omemisonlinemeeting";            
+            public static readonly string EventOnlineMeetingUrl = "omemonlinemeetingurl";
+            public static readonly string EventIsReservationOnly = "omemreservationonly";
+            public static readonly string EventEnableStandbyList = "EventEnableStandbyList";
+            public static readonly string EventIsSignUpColleague = "omemiscolleague";
+            public static readonly string EventLocation = "EventLocation";
         }
 
         public class G1BlockViewIDs

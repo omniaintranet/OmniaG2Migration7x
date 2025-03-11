@@ -52,6 +52,7 @@ namespace Omnia.Migration.App
                 })
                 // HTTP Services
                 .AddTransient<PageApiHttpClient>()
+                .AddTransient<EventApiHttpClient>()
                 .AddTransient<NavigationApiHttpClient>()
                 .AddTransient<AppApiHttpClient>()
                 .AddTransient<SocialApiHttpClient>()

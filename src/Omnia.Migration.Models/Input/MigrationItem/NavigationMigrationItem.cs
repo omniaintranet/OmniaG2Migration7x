@@ -28,6 +28,7 @@ namespace Omnia.Migration.Models.Input.MigrationItem
     public enum NavigationMigrationItemTypes
     {
         Link = 0,
-        Page = 1
+        Page = 1,
+        Event = 2
     }
 }

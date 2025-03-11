@@ -1,14 +1,12 @@
 ﻿using Omnia.Migration.Models.BlockData;
 using Omnia.Migration.Models.Input.BlockData;
 using Omnia.Migration.Models.Input.Social;
-using Omnia.WebContentManagement.Models.Navigation;
 using Omnia.WebContentManagement.Models.Pages;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Omnia.Migration.Models.Input.MigrationItem
-{    
+{
     public class PageNavigationMigrationItem: NavigationMigrationItem
     {
         public PageData PageData { get; set; }
@@ -41,6 +39,10 @@ namespace Omnia.Migration.Models.Input.MigrationItem
 
         public Guid PhysicalPageUniqueId { get; set; }
 
+        public string OutlookEventId { get; set; }
+
+        public List<EventParticipant> EventParticipants { get; set; }
+
         public PageNavigationMigrationItem()
         {
             BlockSettings = new List<G1BlockSetting>();
@@ -48,6 +50,7 @@ namespace Omnia.Migration.Models.Input.MigrationItem
             Comments = new List<G1Comment>();
             Likes = new List<G1Like>();
             RelatedLinks = new List<RelatedLink>();
+            EventParticipants = new List<EventParticipant>();
         }
     }
 
