@@ -115,47 +115,6 @@ namespace Omnia.Migration.Core.Services
             return pageCollectionResult.Data[pageCollectionId][0] as PageCollectionNavigationNode<PageCollectionNavigationData>;
         }
 
-        public async Task AddEventAsync(Guid eventId, EventParticipant participant, ItemQueryResult<IResolvedIdentity> Identities)
-        {
-            if (string.IsNullOrEmpty(participant.CreatedAt) ||
-                string.IsNullOrEmpty(participant.CreatedBy) ||
-                string.IsNullOrEmpty(participant.ModifiedAt) ||
-                string.IsNullOrEmpty(participant.ModifiedBy))
-                return;
-
-            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(Identities, participant.ModifiedBy);
-            var IcreatedBy = UserMaper.GetSystemPropUserIdentitybyEmail(Identities, participant.CreatedBy);
-            if (string.IsNullOrEmpty(ImodifiedBy) || (string.IsNullOrEmpty(IcreatedBy)))
-                return;
-
-            using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
-            {
-                await connection.ExecuteAsync(@"
-                    INSERT INTO Participants (Id,EventId,CreatedBy,ModifiedBy,CreatedAt,ModifiedAt,LoginName,Name,Email,Phone,Comment,Capacity,ParticipantType,StatusResponse,StatusTime,OutlookEventId)
-                     VALUES (@Id,@EventId,@CreatedBy,@ModifiedBy,@CreatedAt,@ModifiedAt,@LoginName,@Name,@Email,@Phone,@Comment,@Capacity,@ParticipantType,@StatusResponse,@StatusTime,@OutlookEventId)",
-                     new
-                     {
-                         Id = Guid.NewGuid(),
-                         EventId = eventId.ToString(),
-                         CreatedBy = IcreatedBy,
-                         CreatedAt = participant.CreatedAt,
-                         ModifiedBy = ImodifiedBy,
-                         ModifiedAt = participant.ModifiedAt,
-                         LoginName = participant.LoginName,
-                         Name = participant.Name,
-                         Email = participant.Email,
-                         Phone = participant.Phone,
-                         Comment = participant.Comment,
-                         Capacity = participant.Capacity,
-                         ParticipantType = participant.ParticipantType,
-                         StatusResponse = participant.StatusResponse,
-                         StatusTime = participant.StatusTime,
-                         OutlookEventId = participant.OutlookEventId
-                     }
-                     );
-            }
-        }
-
         public async Task AddEventParticipantAsync(Guid eventId, EventParticipant participant, ItemQueryResult<IResolvedIdentity> Identities)
         {
             if (string.IsNullOrEmpty(participant.CreatedAt) ||
