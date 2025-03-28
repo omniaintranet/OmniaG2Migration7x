@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Omnia.Migration.Models.Input.MigrationItem
 {
     public class PageNavigationMigrationItem: NavigationMigrationItem
-    {
+    {        
         public PageData PageData { get; set; }
 
         public string MainContent { get; set; }        
@@ -42,6 +42,7 @@ namespace Omnia.Migration.Models.Input.MigrationItem
         public string OutlookEventId { get; set; }
 
         public List<EventParticipant> EventParticipants { get; set; }
+        public List<PageChannel> PageChannels { get; set; }
 
         public PageNavigationMigrationItem()
         {
@@ -51,11 +52,7 @@ namespace Omnia.Migration.Models.Input.MigrationItem
             Likes = new List<G1Like>();
             RelatedLinks = new List<RelatedLink>();
             EventParticipants = new List<EventParticipant>();
+            PageChannels = new List<PageChannel>();
         }
-    }
-
-    public class PageNavigationMigrationItem1 : NavigationMigrationItem
-    {
-        public PageData PageData { get; set; }  
     }
 }

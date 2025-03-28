@@ -4,6 +4,7 @@ using Omnia.Fx.Models.Identities;
 using Omnia.Fx.Models.Queries;
 using Omnia.Migration.Core.Extensions;
 using Omnia.Migration.Core.Http;
+using Omnia.Migration.Core.Mappers;
 using Omnia.Migration.Models.Configuration;
 using Omnia.Migration.Models.Input.MigrationItem;
 using Omnia.WebContentManagement.Models.Navigation;
@@ -12,9 +13,6 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Omnia.Migration.Core.Mappers;
-using Microsoft.Office.SharePoint.Tools;
-using DocumentFormat.OpenXml.Office2019.Word.Cid;
 
 namespace Omnia.Migration.Core.Services
 {
@@ -73,7 +71,7 @@ namespace Omnia.Migration.Core.Services
             }; 
         }
           
-        public async Task UpdatePageSystemInfoAsync(int pageId, int versionId, PageNavigationMigrationItem page, ItemQueryResult<IResolvedIdentity> Identities)
+        public async Task UpdatePageSystemInfoAsync(int pageId, int versionId, PageNavigationMigrationItem page, ItemQueryResult<IResolvedIdentity> identities)
         {
             if (string.IsNullOrEmpty(page.CreatedAt) ||
                 string.IsNullOrEmpty(page.CreatedBy) ||
@@ -81,8 +79,8 @@ namespace Omnia.Migration.Core.Services
                 string.IsNullOrEmpty(page.ModifiedBy))
                 return;
 
-            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(Identities, page.ModifiedBy);
-            var IcreatedBy= UserMaper.GetSystemPropUserIdentitybyEmail(Identities, page.CreatedBy);
+            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(identities, page.ModifiedBy);
+            var IcreatedBy= UserMaper.GetSystemPropUserIdentitybyEmail(identities, page.CreatedBy);
             if (string.IsNullOrEmpty(ImodifiedBy) || (string.IsNullOrEmpty(IcreatedBy)))
                 return;
 
@@ -115,7 +113,7 @@ namespace Omnia.Migration.Core.Services
             return pageCollectionResult.Data[pageCollectionId][0] as PageCollectionNavigationNode<PageCollectionNavigationData>;
         }
 
-        public async Task AddEventParticipantAsync(Guid eventId, EventParticipant participant, ItemQueryResult<IResolvedIdentity> Identities)
+        public async Task AddEventParticipantAsync(Guid eventId, EventParticipant participant, ItemQueryResult<IResolvedIdentity> identities)
         {
             if (string.IsNullOrEmpty(participant.CreatedAt) ||
                 string.IsNullOrEmpty(participant.CreatedBy) ||
@@ -123,8 +121,8 @@ namespace Omnia.Migration.Core.Services
                 string.IsNullOrEmpty(participant.ModifiedBy))
                 return;
 
-            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(Identities, participant.ModifiedBy);
-            var IcreatedBy = UserMaper.GetSystemPropUserIdentitybyEmail(Identities, participant.CreatedBy);
+            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(identities, participant.ModifiedBy);
+            var IcreatedBy = UserMaper.GetSystemPropUserIdentitybyEmail(identities, participant.CreatedBy);
             if (string.IsNullOrEmpty(ImodifiedBy) || (string.IsNullOrEmpty(IcreatedBy)))
                 return;
 

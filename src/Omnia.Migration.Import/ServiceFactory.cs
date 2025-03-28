@@ -53,6 +53,7 @@ namespace Omnia.Migration.App
                 // HTTP Services
                 .AddTransient<PageApiHttpClient>()
                 .AddTransient<EventApiHttpClient>()
+                .AddTransient<PublishingChannelApiHttpClient>()
                 .AddTransient<NavigationApiHttpClient>()
                 .AddTransient<AppApiHttpClient>()
                 .AddTransient<SocialApiHttpClient>()
@@ -76,6 +77,7 @@ namespace Omnia.Migration.App
                 .AddTransient<SPTokenService>()
                 .AddTransient<SitesService>()
                 .AddTransient<PagesService>()
+                .AddTransient<PublishingChannelService>()
                 .AddTransient<WcmService>()
                 .AddTransient<LinksService>()
                 // Migration Actions

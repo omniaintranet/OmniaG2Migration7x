@@ -13,9 +13,9 @@
     <PackageReference Include="Omnia.Fx.NetCore" Version="6.2.2-preview" />
     <PackageReference Include="Omnia.WebContentManagement.Fx" Version="6.2.2-preview" />-->
 		<PackageReference Include="Omnia.Foundation.Models" Version="31.1.20033" />
-		<PackageReference Include="Omnia.Fx.Models" Version="7.6.0" />
-		<PackageReference Include="Omnia.Fx.NetCore" Version="7.6.0" />
-		<PackageReference Include="Omnia.WebContentManagement.Fx" Version="7.6.0" />
+		<PackageReference Include="Omnia.Fx.Models" Version="7.7.20" />
+		<PackageReference Include="Omnia.Fx.NetCore" Version="7.7.20" />
+		<PackageReference Include="Omnia.WebContentManagement.Fx" Version="7.7.19" />
 		<PackageReference Include="ReadLine" Version="2.0.1" />
 		<PackageReference Include="ShellProgressBar" Version="5.2.0" />
 	</ItemGroup>

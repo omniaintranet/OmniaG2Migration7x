@@ -10,9 +10,9 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
 		<PackageReference Include="Omnia.Foundation.Models" Version="31.1.20033" />
-		<PackageReference Include="Omnia.Fx.Models" Version="7.6.0" />
+		<PackageReference Include="Omnia.Fx.Models" Version="7.7.20" />
 		<PackageReference Include="Omnia.Fx.NetCore" Version="7.6.0" />
-		<PackageReference Include="Omnia.WebContentManagement.Fx" Version="7.6.0" />
+		<PackageReference Include="Omnia.WebContentManagement.Fx" Version="7.7.19" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 		<!--<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-preview.1.21102.12" />
     <PackageReference Include="Omnia.Foundation.Models" Version="29.2.19016" />

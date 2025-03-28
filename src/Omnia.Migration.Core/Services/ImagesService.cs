@@ -169,7 +169,7 @@ namespace Omnia.Migration.Core.Services
                         }
                         catch { }  
 
-                        var newImageSrcResult = await ImageApiHttpClient.UploadImageAsync(base64, pageId, imageFileName);
+                        var newImageSrcResult = await ImageApiHttpClient.UploadPageImageAsync(base64, pageId, imageFileName);
                         //var newImageSrcResult = await ImageApiHttpClient.UploadImageAsync(Convert.ToBase64String(imageContent), pageId, imageFileName);
                         //newImageSrcResult.EnsureSuccessCode();
                         File.WriteAllBytes(imageFileName, imageContent);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Omnia.Fx.MediaPicker.StorageProvider;
 using Omnia.Fx.Models.AppSettings;
 using Omnia.Fx.Models.MediaPicker;
 using Omnia.Fx.Models.Shared;
@@ -28,54 +29,63 @@ namespace Omnia.Migration.Core.Http
             OmniaServiceDnsSettings = omniaServiceDnsSettings;
         }
 
-        //protected override void EnsureDefaultHeaders(HttpRequestHeaders headers)
-        //{
-        //    headers.Accept.Clear();
-        //    headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //    headers.AddOmniaUserAgent();
-
-        //    var tokenKey = MigrationSettings.Value.OmniaTokenKey;
-        //    if (!string.IsNullOrEmpty(tokenKey))
-        //    {
-        //        headers.Add("Cookie", "OmniaTokenKey=" + tokenKey);
-        //    }
-        //    else
-        //    {
-        //        headers.Add(Fx.Constants.Parameters.ClientId, MigrationSettings.Value.OmniaSecuritySettings.ClientId.ToString());
-        //        headers.Add(Fx.Constants.Parameters.ClientSecret, MigrationSettings.Value.OmniaSecuritySettings.ClientSecret);
-        //    }
-        //}
-
-        public async ValueTask<string> UploadImageAsync(string base64, int pageId, string fileName)
+        public async ValueTask<string> UploadPageImageAsync(string base64, int pageId, string fileName)
         {
-            //fileName = "index&.jpg";
             var body = new
             {
                 originalImage = new
                 {
                     mediaType = 0,
-                    base64 = base64,
-                    fileName = fileName
+                    base64,
+                    fileName
                 },
                 transformedImage = new
                 {
                     mediaType = 0,
-                    base64 = base64,
-                    fileName = fileName
+                    base64,
+                    fileName
                 },
                 imageAlternateText = "av",
                 providerContext = new
                 {
                     omniaServiceId = "d60fa82a-129a-41a9-93ce-d784dcb217b0",
                     storageProviderContextId = "d4068218-75b6-4dab-beb0-a96b0b33984d",
-                    pageId = pageId
+                    pageId
                 }
             };
-            var httpResponse = await PostAsJsonAsync("/api/mediapicker/image", body, parameters: null);
+            var httpResponse = await PostAsJsonAsync(HttpContract.MediaPickerStorageService.Routes.NewImageAsync, body, parameters: null);
             var apiResponse = await httpResponse.Content.ReadAsJsonAsync<ApiResponse<MediaPickerImage>>();
 
-            //return $"{BaseUrl}/api/mediapicker/image/original/{apiResponse.Data.OmniaImageId}/{apiResponse.Data.FileName}"
-            return $"{BaseUrl}/api/mediapicker/image/{apiResponse.Data.OmniaImageId}/{apiResponse.Data.FileName}";
+            return $"{BaseUrl}/{HttpContract.MediaPickerStorageService.Routes.NewImageAsync}/{apiResponse.Data.OmniaImageId}/{apiResponse.Data.FileName}";
+        }
+
+        public async ValueTask<MediaPickerImage> UploadChannelImageAsync(string base64, string fileName, string imageAlternateText)
+        {
+            var body = new
+            {
+                originalImage = new
+                {
+                    mediaType = 0,
+                    base64,
+                    fileName
+                },
+                transformedImage = new
+                {
+                    mediaType = 0,
+                    base64,
+                    fileName,
+                    altText = imageAlternateText
+                },
+                providerContext = new
+                {
+                    omniaServiceId = "d60fa82a-129a-41a9-93ce-d784dcb217b0",
+                    storageProviderContextId = "1de38673-a37d-4a0f-8e31-ae7934163a31"
+                }
+            };
+            var httpResponse = await PostAsJsonAsync(HttpContract.MediaPickerStorageService.Routes.NewImageAsync, body);
+            var apiResponse = await httpResponse.Content.ReadAsJsonAsync<ApiResponse<MediaPickerImage>>();
+
+            return apiResponse.Data;
         }
     }
 }
