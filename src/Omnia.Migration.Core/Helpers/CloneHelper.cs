@@ -35,7 +35,7 @@ namespace Omnia.Migration.Core.Helpers
         private static void CorrectLayouts(NavigationMigrationItem navMigrationItem)
         {
 
-            if (navMigrationItem.MigrationItemType == NavigationMigrationItemTypes.Page)
+            if (navMigrationItem.MigrationItemType == NavigationMigrationItemTypes.Page || navMigrationItem.MigrationItemType == NavigationMigrationItemTypes.Event)
             {
                 var jsonObj = navMigrationItem.AdditionalProperties["PageData"];
                 jsonObj["Layout"] = JToken.FromObject(new Omnia.Fx.Models.Layouts.Layout());

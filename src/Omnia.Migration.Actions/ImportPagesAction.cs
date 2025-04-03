@@ -1,16 +1,22 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Omnia.Fx.Models.Identities;
+using Omnia.Fx.Models.Language;
+using Omnia.Fx.Models.Queries;
 using Omnia.Fx.Models.Shared;
 using Omnia.Fx.Utilities;
-using Omnia.Migration.Models.Configuration;
 using Omnia.Migration.Core.Extensions;
 using Omnia.Migration.Core.Helpers;
 using Omnia.Migration.Core.Http;
-using Omnia.Migration.Core.Services;
 using Omnia.Migration.Core.Mappers;
-using Omnia.Migration.Models.Input.MigrationItem;
 using Omnia.Migration.Core.Reports;
+using Omnia.Migration.Core.Services;
+using Omnia.Migration.Models.Configuration;
+using Omnia.Migration.Models.Input.EnterpriseProperties;
+using Omnia.Migration.Models.Input.MigrationItem;
+using Omnia.Migration.Models.Shared;
+using Omnia.WebContentManagement.Models.Blocks;
 using Omnia.WebContentManagement.Models.Navigation;
 using Omnia.WebContentManagement.Models.Navigation.HttpContractModels;
 using Omnia.WebContentManagement.Models.Pages;
@@ -18,82 +24,74 @@ using Omnia.WebContentManagement.Models.Pages.HttpContractModels;
 using Omnia.WebContentManagement.Models.Variations;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.IO;
-using Omnia.Migration.Models.Shared;
-using Omnia.Fx.Contexts.Scoped;
-using Omnia.Fx.MultilingualTexts;
-using Omnia.WebContentManagement.Models.Utils;
-using Omnia.Migration.Models.LegacyWCM;
-using DocumentFormat.OpenXml.Bibliography;
-using Omnia.Fx.Models.Identities;
-using Omnia.Fx.Models.Queries;
-using Omnia.WebContentManagement.Models.Pages;
-using Omnia.Fx.SharePoint.Fields.BuiltIn;
-using Omnia.Fx.Models.Language;
-using System.Xml.Linq;
-using static Omnia.WebContentManagement.Models.Navigation.NavigationData;
-using Omnia.Fx.Models.Ux;
-using Omnia.Fx.Models.Manifests;
-using Omnia.WebContentManagement.Models.Blocks;
+using static Omnia.Migration.Core.Constants;
 
 namespace Omnia.Migration.Actions
 {
     public class ImportPagesAction : ParallelizableMigrationAction
     {
         private PageApiHttpClient PageApiHttpClient { get; }
+        private EventApiHttpClient EventApiHttpClient { get; }
         private NavigationApiHttpClient NavigationApiHttpClient { get; }
         private VariationApiHttpClient VariationApiHttpClient { get; }
         private SocialService SocialService { get; }
         private ImagesService ImagesService { get; }
         private PagesService PagesService { get; }
+        private PublishingChannelService PublishingChannelService { get; }
         private UserService UserService { get; }
         private WcmService WcmService { get; }
         private IOptionsSnapshot<MigrationSettings> MigrationSettings { get; }
-        //ILogger<ImportPagesAction> Logger { get; }
         private IProgressManager ProgressManager { get; set; }
         private WcmBaseData WcmData { get; set; }
         private Dictionary<Guid, string> PageIdMapping { get; set; }
         private IdentityApiHttpClient IdentityApiHttpClient { get; }
         public ItemQueryResult<IResolvedIdentity> Identities { get; set; }
         public IList<IResolvedIdentity> da { get; set; }
-        public LanguageTag defaultLang= LanguageTag.EnUs;
+        public List<PublishingChannel> Channels { get; set; }
+
+        public LanguageTag defaultLang = LanguageTag.EnUs;
+
+        Identity currentUser = null;
 
 
         public ImportPagesAction(
             PageApiHttpClient pageApiHttpClient,
+            EventApiHttpClient eventApiHttpClient,
             NavigationApiHttpClient navigationApiHttpClient,
             VariationApiHttpClient variationApiHttpClient,
             SocialService socialService,
             ImagesService imagesService,
             IdentityApiHttpClient identityApiHttpClient,
             PagesService pagesService,
+            PublishingChannelService publishingChannelService,
             UserService userService,
             WcmService wcmService,
             IOptionsSnapshot<MigrationSettings> migrationSettings)
 
         {
             PageApiHttpClient = pageApiHttpClient;
+            EventApiHttpClient = eventApiHttpClient;
             NavigationApiHttpClient = navigationApiHttpClient;
 
             VariationApiHttpClient = variationApiHttpClient;
             ImagesService = imagesService;
             SocialService = socialService;
             PagesService = pagesService;
+            PublishingChannelService = publishingChannelService;
             WcmService = wcmService;
             MigrationSettings = migrationSettings;
             PageIdMapping = new Dictionary<Guid, string>();
             IdentityApiHttpClient = identityApiHttpClient;
-            UserService= userService;
+            UserService = userService;
         }
 
         public override async Task StartAsync(IProgressManager progressManager)
         {
             ProgressManager = progressManager;
             List<NavigationMigrationItem> input = ReadInput();
-            
 
             Console.WriteLine("Select input file to run:....");
             Console.WriteLine("     1. Run for all data in json file");
@@ -103,9 +101,10 @@ namespace Omnia.Migration.Actions
             {
                 input = FilterInput(input);
             }
-          //  this.Identities = await UserService.LoadUserIdentityTEST();
+            //  this.Identities = await UserService.LoadUserIdentityTEST();
             this.Identities = await UserService.LoadUserIdentity();
 
+            currentUser = await IdentityApiHttpClient.TryGetCurrentUserIdentityAsync();
 
             ProgressManager.Start(input.GetTotalCount());
             ImportPagesReport.Instance.Init(MigrationSettings.Value);
@@ -115,6 +114,20 @@ namespace Omnia.Migration.Actions
                 WcmData = await WcmService.LoadWcmBaseDataAsync();
 
                 WcmService.EnsureAndValidateWcmSettings(WcmData);
+
+                if (WcmData.DefaultVariation != null)
+                {
+                    defaultLang = (LanguageTag)Enum.Parse(typeof(LanguageTag), WcmData.DefaultVariation.SupportedLanguages[0].Name.ToString(), true);
+                }
+
+                ImportPublishingChannelObject publishingChannelObj = GetInputPublishingChannels();
+                if (publishingChannelObj != null)
+                {
+                    await PublishingChannelService.EnsureChannelCategoriesAsync(publishingChannelObj.ChannelCategories, defaultLang);
+                    await PublishingChannelService.EnsureChannelsAsync(publishingChannelObj.Channels, defaultLang, this.Identities, currentUser);
+
+                    this.Channels = publishingChannelObj.Channels;
+                }
 
                 RunInParallel(input, MigrationSettings.Value.ImportPagesSettings.NumberOfParallelThreads, async (partitionedInput) =>
                 {
@@ -132,6 +145,7 @@ namespace Omnia.Migration.Actions
                 ImportPagesReport.Instance.ExportTo(MigrationSettings.Value.OutputPath);
             }
         }
+
         private List<NavigationMigrationItem> FilterInput(List<NavigationMigrationItem> input)
         {
             List<NavigationMigrationItem> filterInput = new List<NavigationMigrationItem>();
@@ -144,6 +158,18 @@ namespace Omnia.Migration.Actions
             }
             return filterInput;
         }
+        private ImportPublishingChannelObject GetInputPublishingChannels()
+        {
+            try
+            {
+                var inputPublishingChannelsPath = Path.Combine(MigrationSettings.Value.InputPath, MigrationSettings.Value.ImportPagesSettings.InputPublishingChannelsFile);
+                var importObj = JsonConvert.DeserializeObject<ImportPublishingChannelObject>(File.ReadAllText(inputPublishingChannelsPath));
+
+                return importObj;
+            }
+            catch { return null; }
+        }
+
         private List<NavigationMigrationItem> ReadInput()
         {
             var inputPath = Path.Combine(MigrationSettings.Value.InputPath, MigrationSettings.Value.ImportPagesSettings.InputFile);
@@ -170,13 +196,14 @@ namespace Omnia.Migration.Actions
 
                 switch (node.MigrationItemType)
                 {
-                    
+
                     case NavigationMigrationItemTypes.Link:
                         var linkNode = CloneHelper.CloneToLinkMigration(node);
                         migrationResult = await ImportNavigationLinkAsync(linkNode, parentNode);
                         break;
                     case NavigationMigrationItemTypes.Page:
-                        var pageNode = CloneHelper.CloneToPageMigration(node);                       
+                    case NavigationMigrationItemTypes.Event:
+                        var pageNode = CloneHelper.CloneToPageMigration(node);
                         migrationResult = await ImportNavigationPageAsync(pageNode, parentNode);
                         break;
                     default:
@@ -271,12 +298,44 @@ namespace Omnia.Migration.Actions
             string pagePath = migrationItem.UrlSegment;
             PageId pageId = 0;
             PageNavigationNode<PageNavigationData> pageNode = null;
+            EventDetail eventDetail = null;
 
             try
             {
                 migrationItem.PageData.IsNullThrow(new Exception("PageData cannot be null"));
 
+                string eventLocation = string.Empty;
+                if (migrationItem.MigrationItemType == NavigationMigrationItemTypes.Event)
+                {
+                    if (MigrationSettings.Value.WCMContextSettings.EnterprisePropertiesMappings.ContainsKey(BuiltInEnterpriseProperties.EventLocation)
+                        && migrationItem.PageData.EnterpriseProperties.ContainsKey(BuiltInEnterpriseProperties.EventLocation))
+                    {
+                        var terms = migrationItem.PageData.EnterpriseProperties[BuiltInEnterpriseProperties.EventLocation].ToObject<List<G1TaxonomyPropertyValue>>();
+                        eventLocation = String.Join(", ", terms.Select(t => t.Label));
+                    }
+                }
+
                 PageDataMapper.MapPageData(migrationItem, WcmData.PageTypes, MigrationSettings.Value, Identities);
+
+                if (migrationItem.MigrationItemType == NavigationMigrationItemTypes.Event)
+                {
+                    eventDetail = new()
+                    {
+                        PageCollectionId = MigrationSettings.Value.WCMContextSettings.PageCollectionId,
+                        Title = ((PlainPageData)migrationItem.PageData).Title,
+                        StartDate = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventStartDate, out JToken eventStartDate) ? eventStartDate.ToString() : null,
+                        EndDate = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventEndDate, out JToken eventEndDate) ? eventEndDate.ToString() : null,
+                        MaxParticipants = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventMaxParticipants, out JToken value) ? (int)value : Int32.MaxValue,
+                        RegistrationStartDate = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventRegistrationStartDate, out JToken eventRegistrationStartDate) ? eventRegistrationStartDate.ToString() : null,
+                        RegistrationEndDate = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventRegistrationEndDate, out JToken eventRegistrationEndDate) ? eventRegistrationEndDate.ToString() : null,
+                        CancellationEndDate = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventCancellationEndDate, out JToken eventCancellationEndDate) ? eventCancellationEndDate.ToString() : null,
+                        IsOnlineMeeting = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventIsOnlineMeeting, out JToken eventIsOnlineMeeting) && (bool)eventIsOnlineMeeting,
+                        ReservationOnly = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventIsReservationOnly, out JToken eventIsReservationOnly) && (bool)eventIsReservationOnly,
+                        IsColleague = migrationItem.PageData.EnterpriseProperties.TryGetValue(BuiltInEnterpriseProperties.EventIsSignUpColleague, out JToken eventIsSignUpColleague) && (bool)eventIsSignUpColleague,
+                        OutlookEventId = migrationItem.OutlookEventId,
+                        Location = eventLocation
+                    };
+                }
 
                 var existingPage = NavigationNodeHelper.FindMatchingNavigationNode(migrationItem, WcmData.ExistingNodes, parentNode);
                 if (existingPage != null)
@@ -285,7 +344,7 @@ namespace Omnia.Migration.Actions
                 }
                 else
                 {
-                    pageNode = await AddNewPageAsync(migrationItem, parentNode);
+                    pageNode = await AddNewPageAsync(migrationItem, parentNode, eventDetail);
                     ImportPagesReport.Instance.AddNewItem(migrationItem, pageNode.Id, pageId, pagePath, migrationItem.PhysicalPageUniqueId);
                 }
 
@@ -310,9 +369,8 @@ namespace Omnia.Migration.Actions
             }
         }
 
-        private async ValueTask<PageNavigationNode<PageNavigationData>> AddNewPageAsync(PageNavigationMigrationItem migrationItem, INavigationNode parentNode)
+        private async ValueTask<PageNavigationNode<PageNavigationData>> AddNewPageAsync(PageNavigationMigrationItem migrationItem, INavigationNode parentNode, EventDetail eventDetail = null)
         {
-
             var pageCreationRequest = CreatePageWithNavigationCreationRequest(migrationItem, parentNode);
             var pageCreationResult = await PageApiHttpClient.CreatePage(pageCreationRequest);
             pageCreationResult.EnsureSuccessCode();
@@ -376,6 +434,16 @@ namespace Omnia.Migration.Actions
 
             var publishResult = await PageApiHttpClient.PublishAsync(pageCheckedOutVersion);
             publishResult.EnsureSuccessCode();
+
+            if (eventDetail != null)
+            {
+                await EnsurePageEventAsync(pageId, eventDetail, migrationItem.EventParticipants);
+            }
+
+            if (migrationItem.PageChannels.Any())
+            {
+                await PublishingChannelService.PublishPageToChannelsAsync(pageId, migrationItem.PageChannels, this.Channels);
+            }
 
             await PagesService.UpdatePageSystemInfoAsync(pageId: pageId, versionId: publishResult.Data.Id, page: migrationItem, Identities);
 
@@ -460,7 +528,7 @@ namespace Omnia.Migration.Actions
 
         private CreateNavigationRequest CreateNavigationCreationRequest(LinkNavigationMigrationItem link, INavigationNode parentNode)
         {
-             
+
             var nodeData = new LinkNavigationData
             {
                 Title = new Fx.Models.Language.MultilingualString(),// VariationString(),
@@ -469,29 +537,20 @@ namespace Omnia.Migration.Actions
                 AdditionalProperties = new Dictionary<string, JToken>(),
                 HideInCurrentNavigation = false,
                 HideInMegaMenu = false
-               
-             
-                
             };
 
-            if (WcmData.DefaultVariation != null)            {
-                var defaultlang = (LanguageTag)Enum.Parse(typeof(LanguageTag), WcmData.DefaultVariation.SupportedLanguages[0].Name.ToString(), true);
-                nodeData.Title.Add(defaultlang, link.Title);
-            }
-            else nodeData.Title.Add(defaultLang, link.Title);
-
+            nodeData.Title.Add(defaultLang, link.Title);
 
             var icon = new IconPickerModel { IconType = null, IconSource = "IAutomaticIcon" };
 
-
-        //hieu rem
-        //nodeData.Title.Add(WcmData.DefaultVariation != null ? (int)WcmData.DefaultVariation.Id : 0, link.Title);
-        // nodeData.Title.Add(WcmData.DefaultVariation.SupportedLanguages[0].Name, link.Title);
-        nodeData.AdditionalProperties.Add("url", link.Url);
+            //hieu rem
+            //nodeData.Title.Add(WcmData.DefaultVariation != null ? (int)WcmData.DefaultVariation.Id : 0, link.Title);
+            // nodeData.Title.Add(WcmData.DefaultVariation.SupportedLanguages[0].Name, link.Title);
+            nodeData.AdditionalProperties.Add("url", link.Url);
             nodeData.AdditionalProperties.Add("openInNewWindow", false);
-            nodeData.AdditionalProperties.Add("urlSegment","");
+            nodeData.AdditionalProperties.Add("urlSegment", "");
             nodeData.AdditionalProperties.Add("icon", JToken.FromObject(icon));
-          
+
 
             //nodeData.AdditionalProperties.Add("hideInCurrentNavigation", false);
             //  nodeData.AdditionalProperties.Add("hideInMegaMenu", false);
@@ -502,8 +561,8 @@ namespace Omnia.Migration.Actions
                 Position = new NavigationPosition
                 {
                     Parent = parentNode,
-                    After= null,
-                    Before= null
+                    After = null,
+                    Before = null
                 },
             };
         }
@@ -621,6 +680,24 @@ namespace Omnia.Migration.Actions
                     await PagesService.UpdatePageSystemInfoAsync(pageId: publishResult.Data.PageId, versionId: publishResult.Data.Id, page: translationPage, Identities);
                     await SocialService.ImportCommentsAndLikesAsync(pageId: publishResult.Data.PageId, migrationItem: translationPage, existingPage: null, Identities);
                 }
+            }
+        }
+
+        private async Task EnsurePageEventAsync(PageId pageId, EventDetail eventDetail, List<EventParticipant> eventParticipants)
+        {
+            eventDetail.PageId = pageId;
+            var inputOutlookEventId = eventDetail.OutlookEventId;
+
+            var ensureEventResult = await EventApiHttpClient.EnsureEventAsync(eventDetail);
+            ensureEventResult.EnsureSuccessCode();
+
+            if (eventParticipants.Any())
+            {
+                foreach (var participant in eventParticipants)
+                {
+                    await PagesService.AddEventParticipantAsync(ensureEventResult.Data.Id, participant, Identities);
+                }
+                await PagesService.UpdateEventDetailsAsync(ensureEventResult.Data.Id, eventParticipants.Where(x => x.ParticipantType == ParticipantType.Official).Sum(x => x.Capacity), inputOutlookEventId);
             }
         }
     }

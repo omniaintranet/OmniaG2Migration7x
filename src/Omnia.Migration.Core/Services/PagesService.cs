@@ -4,6 +4,7 @@ using Omnia.Fx.Models.Identities;
 using Omnia.Fx.Models.Queries;
 using Omnia.Migration.Core.Extensions;
 using Omnia.Migration.Core.Http;
+using Omnia.Migration.Core.Mappers;
 using Omnia.Migration.Models.Configuration;
 using Omnia.Migration.Models.Input.MigrationItem;
 using Omnia.WebContentManagement.Models.Navigation;
@@ -12,7 +13,6 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Omnia.Migration.Core.Mappers;
 
 namespace Omnia.Migration.Core.Services
 {
@@ -71,7 +71,7 @@ namespace Omnia.Migration.Core.Services
             }; 
         }
           
-        public async Task UpdatePageSystemInfoAsync(int pageId, int versionId, PageNavigationMigrationItem page, ItemQueryResult<IResolvedIdentity> Identities)
+        public async Task UpdatePageSystemInfoAsync(int pageId, int versionId, PageNavigationMigrationItem page, ItemQueryResult<IResolvedIdentity> identities)
         {
             if (string.IsNullOrEmpty(page.CreatedAt) ||
                 string.IsNullOrEmpty(page.CreatedBy) ||
@@ -79,8 +79,8 @@ namespace Omnia.Migration.Core.Services
                 string.IsNullOrEmpty(page.ModifiedBy))
                 return;
 
-            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(Identities, page.ModifiedBy);
-            var IcreatedBy= UserMaper.GetSystemPropUserIdentitybyEmail(Identities, page.CreatedBy);
+            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(identities, page.ModifiedBy);
+            var IcreatedBy= UserMaper.GetSystemPropUserIdentitybyEmail(identities, page.CreatedBy);
             if (string.IsNullOrEmpty(ImodifiedBy) || (string.IsNullOrEmpty(IcreatedBy)))
                 return;
 
@@ -111,6 +111,63 @@ namespace Omnia.Migration.Core.Services
                 throw new Exception("Cannot find page collection with ID " + pageCollectionId);
 
             return pageCollectionResult.Data[pageCollectionId][0] as PageCollectionNavigationNode<PageCollectionNavigationData>;
-        }       
+        }
+
+        public async Task AddEventParticipantAsync(Guid eventId, EventParticipant participant, ItemQueryResult<IResolvedIdentity> identities)
+        {
+            if (string.IsNullOrEmpty(participant.CreatedAt) ||
+                string.IsNullOrEmpty(participant.CreatedBy) ||
+                string.IsNullOrEmpty(participant.ModifiedAt) ||
+                string.IsNullOrEmpty(participant.ModifiedBy))
+                return;
+
+            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(identities, participant.ModifiedBy);
+            var IcreatedBy = UserMaper.GetSystemPropUserIdentitybyEmail(identities, participant.CreatedBy);
+            if (string.IsNullOrEmpty(ImodifiedBy) || (string.IsNullOrEmpty(IcreatedBy)))
+                return;
+
+            using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
+            {
+                await connection.ExecuteAsync(@"
+                    INSERT INTO Participants (Id,EventId,CreatedBy,ModifiedBy,CreatedAt,ModifiedAt,LoginName,Name,Email,Phone,Comment,Capacity,ParticipantType,StatusResponse,StatusTime,OutlookEventId)
+                     VALUES (@Id,@EventId,@CreatedBy,@ModifiedBy,@CreatedAt,@ModifiedAt,@LoginName,@Name,@Email,@Phone,@Comment,@Capacity,@ParticipantType,@StatusResponse,@StatusTime,@OutlookEventId)",
+                     new
+                     {
+                         Id = Guid.NewGuid(),
+                         EventId = eventId.ToString(),
+                         CreatedBy = IcreatedBy,
+                         CreatedAt = participant.CreatedAt,
+                         ModifiedBy = ImodifiedBy,
+                         ModifiedAt = participant.ModifiedAt,
+                         LoginName = participant.LoginName,
+                         Name = participant.Name,
+                         Email = participant.Email,
+                         Phone = participant.Phone,
+                         Comment = participant.Comment,
+                         Capacity = participant.Capacity,
+                         ParticipantType = participant.ParticipantType,
+                         StatusResponse = participant.StatusResponse,
+                         StatusTime = participant.StatusTime,
+                         OutlookEventId = participant.OutlookEventId
+                     }
+                     );
+            }
+        }
+
+        public async Task UpdateEventDetailsAsync(Guid eventId, int registeredCapacity, string outlookEventId)
+        {
+            using (var connection = new SqlConnection(MigrationSettings.Value.WCMContextSettings.DatabaseConnectionString))
+            {
+                await connection.ExecuteAsync(@"
+                    UPDATE Events Set RegisteredCapacity = @RegisteredCapacity, OutlookEventId = @OutlookEventId Where Id = @Id",
+                     new
+                     {
+                         Id = eventId,
+                         RegisteredCapacity = registeredCapacity,
+                         OutlookEventId = outlookEventId
+                     }
+                     );
+            }
+        }
     }
 }

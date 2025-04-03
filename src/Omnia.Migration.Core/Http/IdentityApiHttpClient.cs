@@ -1,6 +1,8 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Extensions.Options;
+using Omnia.Fx.Contexts;
 using Omnia.Fx.Http.Preconfigured.HttpClients;
+using Omnia.Fx.Identities;
 using Omnia.Fx.Models.Apps;
 using Omnia.Fx.Models.AppSettings;
 using Omnia.Fx.Models.BusinessProfiles;
@@ -16,6 +18,7 @@ using System.Collections.Specialized;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static Omnia.Fx.Identities.HttpContract;
 
 
 namespace Omnia.Migration.Core.Http
@@ -136,7 +139,24 @@ namespace Omnia.Migration.Core.Http
             }
             return null;
         }
-        
-        
+
+        public async ValueTask<Identity> TryGetCurrentUserIdentityAsync()
+        {
+            Identity currentUser = null;
+            try
+            {
+                var httpResponse = await GetAsync(Fx.Users.HttpContract.UserService.Routes.BaseRoute + "/properties");
+                var apiResponse = await httpResponse.Content.ReadAsJsonAsync<ApiResponse<UserWithProperties>>();
+
+                var userId = new Guid(apiResponse.Data.AdditionalProperties["id"].ToString());
+
+                Identity.TryParse($"{userId}[1]", out currentUser);
+            }
+            catch
+            {
+            }
+
+            return currentUser;
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Omnia.Migration.App
         }
 
         static MigrationActions SelectAction()
-        {            
+        {
             var selectedOption = ConsoleHelper.PromptForOptions("Select actions:", typeof(MigrationActions));
             return (MigrationActions)selectedOption;
         }
@@ -100,11 +100,11 @@ namespace Omnia.Migration.App
                         ExecuteMigrationAction<ExportChildUnderCustomLink>("Export Child under Custom links", "Export Child under Custom links");
                         break;
                     case MigrationActions.AppInstanceFeatureAction:
-                        Console.WriteLine("Feature acction for sites");
-                        ExecuteMigrationAction<AppInstanceFeatureAction>("Feature acction for sites", "Feature acction for sites");
+                        Console.WriteLine("Feature action for sites");
+                        ExecuteMigrationAction<AppInstanceFeatureAction>("Feature action for sites", "Feature action for sites");
                         break;
                     case MigrationActions.AppAdminPermissionAction:
-                        Console.WriteLine("App Admin permission acction for sites");
+                        Console.WriteLine("App Admin permission action for sites");
                         ExecuteMigrationAction<SiteAppPermissionUpdate>("App Admin permissions", "App Admin permissions");
                         break;
                 }

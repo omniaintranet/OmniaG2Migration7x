@@ -25,13 +25,30 @@ namespace Omnia.Migration.Core.Mappers
 {
     public static class PageDataMapper
     {
-        public static void MapPageData(PageNavigationMigrationItem page, Dictionary<int, PublishedVersionPageData<PageData>> pageTypes, MigrationSettings settings, ItemQueryResult<IResolvedIdentity> Identities)
-        {
+        public static void MapPageData(PageNavigationMigrationItem page, Dictionary<int, PublishedVersionPageData<PageData>> pageTypes, MigrationSettings settings, ItemQueryResult<IResolvedIdentity> Identities)        {
             EnsureDataFormat(page);
 
             MapSystemProperties(page, Identities);
             MapEnterpriseProperties(page, settings.WCMContextSettings, Identities);
             MapLayout(page, pageTypes, settings.WCMContextSettings);
+
+            if (page.MigrationItemType == NavigationMigrationItemTypes.Event)
+            {
+                MapEventParticipants(page, Identities);
+            }
+        }
+
+        private static void MapEventParticipants(PageNavigationMigrationItem page, ItemQueryResult<IResolvedIdentity> Identities)
+        {
+            foreach (var participant in page.EventParticipants)
+            {
+                var foundIdentity = Identities.Items.FirstOrDefault(x => ((ResolvedUserIdentity)x).Username.Value.Text.Equals(participant.Email, StringComparison.InvariantCultureIgnoreCase));
+                if (foundIdentity != null)
+                {
+                    participant.Name = ((ResolvedUserIdentity)foundIdentity).DisplayName.Value.Text;
+                    participant.LoginName = foundIdentity.Id + "[1]";
+                }
+            }
         }
 
         private static void MapLayout(PageNavigationMigrationItem page, Dictionary<int, PublishedVersionPageData<PageData>> pageTypes, WCMContextSettings wcmSettings)
@@ -375,6 +392,8 @@ namespace Omnia.Migration.Core.Mappers
                 migrationItem.Comments = new List<Models.Input.Social.G1Comment>();
             if (migrationItem.Likes == null)
                 migrationItem.Likes = new List<Models.Input.Social.G1Like>();
+            if (migrationItem.EventParticipants == null)
+                migrationItem.EventParticipants = new List<EventParticipant>();
 
             if (migrationItem.PageData.EnterpriseProperties == null)
                 migrationItem.PageData.EnterpriseProperties = new PageEnterprisePropertyDictionary();

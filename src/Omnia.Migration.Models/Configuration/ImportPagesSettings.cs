@@ -6,6 +6,8 @@ namespace Omnia.Migration.Models.Configuration
 {
     public class ImportPagesSettings: ParallelizableMigrationActionSettings
     {
+        public string InputPublishingChannelsFile { get; set; }
+
         public bool ImportLikesAndComments { get; set; }
 
         public bool ImportTranslationPages { get; set; }
