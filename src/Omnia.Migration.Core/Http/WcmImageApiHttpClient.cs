@@ -4,6 +4,7 @@ using Omnia.Fx.Models.AppSettings;
 using Omnia.Fx.Models.MediaPicker;
 using Omnia.Fx.Models.Shared;
 using Omnia.Migration.Models.Configuration;
+using Omnia.WebContentManagement.Models.Pages;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace Omnia.Migration.Core.Http
             OmniaServiceDnsSettings = omniaServiceDnsSettings;
         }
 
-        public async ValueTask<string> UploadPageImageAsync(string base64, int pageId, string fileName)
+        public async ValueTask<string> UploadPageImageAsync(string base64, int pageId, string fileName, bool isCommentImage = false)
         {
             var body = new
             {
@@ -49,7 +50,7 @@ namespace Omnia.Migration.Core.Http
                 providerContext = new
                 {
                     omniaServiceId = "d60fa82a-129a-41a9-93ce-d784dcb217b0",
-                    storageProviderContextId = "d4068218-75b6-4dab-beb0-a96b0b33984d",
+                    storageProviderContextId = isCommentImage ? "b01196aa-3d29-4782-9887-4f2477e0560c" : "d4068218-75b6-4dab-beb0-a96b0b33984d",
                     pageId
                 }
             };
