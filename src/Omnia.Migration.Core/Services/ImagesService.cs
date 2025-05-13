@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Omnia.Utils;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Omnia.Migration.Core.Helpers;
@@ -13,18 +14,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 
 namespace Omnia.Migration.Core.Services
 {
-
-    //public class ImageModel
-    //{
-    //    bool isSucces;
-    //    string errorMessage;
-    //    string content;
-    //}
-
     public class ImagesService
     {
         private bool imageNotFound { get; set; }
@@ -129,38 +122,15 @@ namespace Omnia.Migration.Core.Services
                             imageContent = ReduceImageSize(imageContent);
                             size = imageContent.Length / 1024;
                         }
-                        //if (size > 10000)
-                        //{
-                        //    //Reduce image size                            
-                        //    imageContent = ReduceImageSize(imageContent);
-                        //}
-                        //else
-                        //{
-                        //    imageContent = await imageHttpClient.GetImage(imageSrc);
-                        //}
 
                         var base64 = Convert.ToBase64String(imageContent);
-
-                        //base64 = $"data:image/svg;base64,{base64}";
-
-                        //Diem - 10182022 - SVG Viewer for Kungsbacka
-                        //if(content.Contains(".svg") && key== MigrationSettings.Value.WCMContextSettings.DefaultSVGViewerProperty)
                         try
                         {
                             var svgContent = JsonConvert.DeserializeObject<Models.BlockData.SVGViewerData>(content);
                             if (svgContent.documentUrl != null)
                             {                               
                                 var imgParts = imageSrc.Split("/");
-                                string imgPath = imgParts[0] + "//" + imgParts[2] + "/" + imgParts[3] + "/" + imgParts[4];
-                                //var clientContext = await SPTokenService.CreateAppOnlyClientContextAsync(imgPath);
-                                //clientContext.Load(clientContext.Web);
-                                //var file = clientContext.Web.GetFileByUrl(imageSrc);
-                                //clientContext.Load(file, a => a.ListId);
-                                //clientContext.Load(file, a => a.ListItemAllFields.Id);
-                                //await clientContext.ExecuteQueryAsync();
-
-                                //svgContent.id = file.ListItemAllFields.Id;
-                                //svgContent.listId = file.ListId;
+                                string imgPath = imgParts[0] + "//" + imgParts[2] + "/" + imgParts[3] + "/" + imgParts[4]; 
                                 svgContent.name = imageFileName.Split(".svg").First();
                                 svgContent.spWebUrl = imgPath;
                                 content = JsonConvert.SerializeObject(svgContent);
@@ -169,33 +139,8 @@ namespace Omnia.Migration.Core.Services
                         }
                         catch { }  
 
-                        var newImageSrcResult = await ImageApiHttpClient.UploadPageImageAsync(base64, pageId, imageFileName);
-                        //var newImageSrcResult = await ImageApiHttpClient.UploadImageAsync(Convert.ToBase64String(imageContent), pageId, imageFileName);
-                        //newImageSrcResult.EnsureSuccessCode();
-                        File.WriteAllBytes(imageFileName, imageContent);
-                        using (var stream = new MemoryStream(File.ReadAllBytes(imageFileName)))
-                        {
-                            try
-                            {
-                                var imgObj = Image.FromStream(stream, false, false);
-                                var gcd = CommonUtils.GCD(imgObj.Width, imgObj.Height);
-
-                                var xRatio = (imgObj.Width / gcd).ToString();
-                                var yRatio = (imgObj.Height / gcd).ToString();
-                                content = content.Replace("\"x\": 16.0", "\"x\": " + xRatio);
-                                content = content.Replace("\"y\": 9.0", "\"y\": " + yRatio);
-                                content = content.Replace("\"ratioDisplayName\": \"Custom\",\r\n      \"xRatio\": 16,\r\n      \"yRatio\": 9", "\"ratioDisplayName\": \"Custom\",\r\n      \"xRatio\": " + xRatio + ",\r\n      \"yRatio\": " + yRatio);
-                            }
-                            catch (Exception)
-                            {
-                            }
-
-                        }
-                        File.Delete(imageFileName);
-
-
-                        content = content.Replace(imageSrc, newImageSrcResult);
-
+                        var newImageSrcResult = await ImageApiHttpClient.UploadPageImageAsync(base64, pageId, imageFileName); 
+                        content= LinkParser.ImageContent(key,content,imageSrc,newImageSrcResult);
                         var configParamStartIndex = content.IndexOf("%22%2c%22configuration%22");
                         var configParamEndIndex = content.IndexOf("Video%22%3afalse%7d");
                         if (configParamStartIndex > -1 && configParamEndIndex > configParamStartIndex)
@@ -216,6 +161,12 @@ namespace Omnia.Migration.Core.Services
                     //throw ex;
                     ImportPagesReport.Instance.AddFailedItem(migrationItem, 99999999, pageId, imageSrc, ex);
                 }
+            }
+
+            var videoSrcs = LinkParser.ParseIframeSrc(content);
+            foreach ( var videoSrc in videoSrcs )
+            {
+                content = LinkParser.VideoContent(content, videoSrc);
             }
 
             return content;

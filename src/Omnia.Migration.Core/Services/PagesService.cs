@@ -79,8 +79,8 @@ namespace Omnia.Migration.Core.Services
                 string.IsNullOrEmpty(page.ModifiedBy))
                 return;
 
-            var ImodifiedBy = UserMaper.GetSystemPropUserIdentitybyEmail(identities, page.ModifiedBy);
-            var IcreatedBy= UserMaper.GetSystemPropUserIdentitybyEmail(identities, page.CreatedBy);
+            var ImodifiedBy = page.ModifiedBy;// UserMaper.GetSystemPropUserIdentitybyEmail(identities, page.ModifiedBy);
+            var IcreatedBy = page.CreatedBy;// UserMaper.GetSystemPropUserIdentitybyEmail(identities, page.CreatedBy);
             if (string.IsNullOrEmpty(ImodifiedBy) || (string.IsNullOrEmpty(IcreatedBy)))
                 return;
 

@@ -24,6 +24,7 @@ using Omnia.WebContentManagement.Models.Pages.HttpContractModels;
 using Omnia.WebContentManagement.Models.Variations;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,6 +57,8 @@ namespace Omnia.Migration.Actions
 
         Identity currentUser = null;
 
+        private string fileName = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.RelativeSearchPath ?? "")+ "Channels.txt";
+
 
         public ImportPagesAction(
             PageApiHttpClient pageApiHttpClient,
@@ -86,6 +89,78 @@ namespace Omnia.Migration.Actions
             PageIdMapping = new Dictionary<Guid, string>();
             IdentityApiHttpClient = identityApiHttpClient;
             UserService = userService;
+        }
+        private string LoadSaved(string path)
+        {
+            string line = "";
+
+            try
+            {
+                //Pass the file path and file name to the StreamReader constructor
+                StreamReader sr = new StreamReader(path);
+                //Read the first line of text
+                line = sr.ReadLine();
+                string tmp = "";
+                //Continue to read until you reach end of file
+                while (tmp != null)
+                {
+                    //Read the next line
+                    tmp = sr.ReadLine();
+                    line += sr.ReadLine();
+                }
+                //close the file
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Executing finally block.");
+            }
+            return line;
+        }
+        private void UpdateSaved(string jsonObject, string path, bool append = false)
+        {
+            try
+            {
+                //Pass the filepath and filename to the StreamWriter Constructor
+                StreamWriter sw = new StreamWriter(path, append);
+
+                sw.WriteLine(jsonObject);
+                //Close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                throw e;
+                //Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Executing finally block.");
+            }
+        }
+
+        private void LoadSavedChannels(List<PublishingChannel> loadingChannels)
+        {
+            try
+            {
+                string data = LoadSaved(fileName);
+                List<PublishingChannel> channels = new List<PublishingChannel>();
+                channels = JsonConvert.DeserializeObject<List<PublishingChannel>>(data);
+                if(channels!= null)
+                foreach (var channel in loadingChannels)
+                {
+                    var savedItem = channels.Where(x=>x.Uid==channel.Uid).FirstOrDefault();
+                    if(savedItem != null)
+                    {
+                        channel.Id = savedItem.Id;
+                    }
+                }
+            }
+            catch { }
         }
 
         public override async Task StartAsync(IProgressManager progressManager)
@@ -124,7 +199,12 @@ namespace Omnia.Migration.Actions
                 if (publishingChannelObj != null)
                 {
                     await PublishingChannelService.EnsureChannelCategoriesAsync(publishingChannelObj.ChannelCategories, defaultLang);
+                    LoadSavedChannels(publishingChannelObj.Channels);
                     await PublishingChannelService.EnsureChannelsAsync(publishingChannelObj.Channels, defaultLang, this.Identities, currentUser);
+                    //save channels 
+                    string jsonObject = JsonConvert.SerializeObject(publishingChannelObj.Channels);
+                     
+                    UpdateSaved(jsonObject, fileName);
 
                     this.Channels = publishingChannelObj.Channels;
                 }

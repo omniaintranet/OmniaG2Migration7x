@@ -36,6 +36,15 @@
 		<Reference Include="Microsoft.SharePoint.Client.Runtime.Windows">
 			<HintPath>..\..\..\OmniaG2Migration7\src\Assemblies\CSOM\Microsoft.SharePoint.Client.Runtime.Windows.dll</HintPath>
 		</Reference>
+		<Reference Include="Omnia.Utils">
+		  <HintPath>..\..\..\..\AMSource\OmniaG2Migration7x-main\OmniaG2Migration7x-main\src\Omnia.Migration.Core\Omnia.Utils.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Extensions\Omnia.Utils.dll">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>
